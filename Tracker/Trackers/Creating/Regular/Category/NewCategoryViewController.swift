@@ -11,13 +11,17 @@ import UIKit
 
 protocol NewCategoryViewControllerDelegate: AnyObject {
     func didCreateCategory(_ category: String)
+    func updatedCategoryList(_ categories: [String])
 }
+
 
 // MARK: - NewCategoryViewController
 
 final class NewCategoryViewController: UIViewController {
     
     weak var delegate: NewCategoryViewControllerDelegate?
+    
+    var categoryModel = CategoryModel()
     
     // MARK: - Private Properties
     
@@ -69,6 +73,8 @@ final class NewCategoryViewController: UIViewController {
     @objc private func pushDoneButton() {
         guard let text = textField.text, !text.isEmpty else { return }
         delegate?.didCreateCategory(text)
+        categoryModel.categories.append(text)
+        delegate?.updatedCategoryList(categoryModel.categories)
         dismiss(animated: true, completion: nil)
     }
     

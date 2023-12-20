@@ -10,9 +10,9 @@ import UIKit
 // Структура для хранения информации о трекере
 
 struct Tracker {
-    let id: UInt // Уникальный идентификатор трекера
+    let id: UUID // Уникальный идентификатор трекера
     let name: String // Название трекера
     let color: UIColor // Цвет трекера
     let emoji: String // Эмоджи для трекера
-    let schedule: [String] // Расписание трекера
+    let schedule: [WeekDay] // Расписание трекера
 }

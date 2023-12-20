@@ -9,6 +9,8 @@ import UIKit
 
 final class CreatingTrackerViewController: UIViewController {
     
+    // MARK: - Private Properties
+    
     private let regularButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -42,24 +44,38 @@ final class CreatingTrackerViewController: UIViewController {
         return stack
     }()
     
+    // MARK: - UIViewController Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupConstraints()
         setupNavBar()
+        setupConstraints()
         setupButtons()
         view.backgroundColor = .trWhite
     }
+    
+    // MARK: - Actions
+    
+    @objc private func regularButtonClicked() {
+        let newRegularViewController = UINavigationController(rootViewController: NewRegularViewController())
+        present(newRegularViewController, animated: true)
+    }
+    
+    @objc private func irregularButtonClicked() {
+    }
+    
+    // MARK: - Private Methods
     
     private func setupNavBar(){
         navigationItem.title = "Создание трека"
     }
     
     private func setupButtons() {
-            regularButton.addTarget(self, action: #selector(regularButtonClicked), for: .touchUpInside)
-            irregularButton.addTarget(self, action: #selector(irregularButtonClicked), for: .touchUpInside)
-            stackView.addArrangedSubview(regularButton)
-            stackView.addArrangedSubview(irregularButton)
-        }
+        regularButton.addTarget(self, action: #selector(regularButtonClicked), for: .touchUpInside)
+        irregularButton.addTarget(self, action: #selector(irregularButtonClicked), for: .touchUpInside)
+        stackView.addArrangedSubview(regularButton)
+        stackView.addArrangedSubview(irregularButton)
+    }
     
     private func setupConstraints() {
         view.addSubview(stackView)
@@ -71,13 +87,5 @@ final class CreatingTrackerViewController: UIViewController {
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.heightAnchor.constraint(equalToConstant: 136)
         ])
-    }
-    
-    @objc private func regularButtonClicked() {
-        let newRegularViewController = UINavigationController(rootViewController: NewRegularViewController())
-        present(newRegularViewController, animated: true)
-    }
-    
-    @objc private func irregularButtonClicked() {
     }
 }

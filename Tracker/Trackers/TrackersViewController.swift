@@ -8,11 +8,13 @@
 import UIKit
 
 // MARK: - TrackersViewController
-final class TrackersViewController: UIViewController, UICollectionViewDelegate {
+
+final class TrackersViewController: UIViewController {
     
     var categories: [TrackerCategory] = [] // Список категорий и их трекеров
     var completedTrackers: [TrackerRecord] = [] // Список выполненных трекеров
     var visibleCategories: [TrackerCategory] = []
+    var currentDate: Date = .init() // Хранение текущей даты, при выборе даты в UIDatePicker меняет значение этого свойства
     
     private let trackersLabel: UILabel = {
         let trackerLabel = UILabel()
@@ -37,63 +39,66 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate {
             collectionViewLayout: UICollectionViewFlowLayout()
         )
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
+        collectionView.backgroundColor = .trWhite
+        collectionView.register(TrackerSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerSupplementaryView.reuseIdentifier)
+        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
     
-    private let errorImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "errorImage")
-        return imageView
+    private let datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.preferredDatePickerStyle = .compact
+        datePicker.datePickerMode = .date
+        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        return datePicker
     }()
     
-    private let errorTextLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Что будем отслеживать?"
-        label.font = .systemFont(ofSize: 12)
-        label.textColor = .trBlack
-        return label
-    }()
+    // MARK: - UIViewController Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupViews()
         setupConstraints()
-        collectionView.delegate = self
-        collectionView.dataSource = self
     }
     
-    @objc private func didTapAddTrackerButton() {
+    // MARK: - Actions
+    
+    @objc private func pushAddTrackerButton() {
         let creatingTrackerViewController = UINavigationController(rootViewController: CreatingTrackerViewController())
         present(creatingTrackerViewController, animated: true)
     }
+    
+    @objc private func dateChanged(_ picker: UIDatePicker) {
+        currentDate = datePicker.date
+    }
+    
+    // MARK: - Private Methods
     
     private func setupNavigationBar() {
         let addTrackerButton = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
-            action: #selector(didTapAddTrackerButton))
+            action: #selector(pushAddTrackerButton))
         addTrackerButton.tintColor = .trBlack
         navigationItem.leftBarButtonItem = addTrackerButton
         
-        let datePicker = UIDatePicker()
-        datePicker.preferredDatePickerStyle = .compact
-        datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ru_RU")
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
     
-    private func setupConstraints() {
+    private func setupViews() {
         [trackersLabel,
          searchField,
-         collectionView,
-         errorImageView,
-         errorTextLabel
-        ].forEach
-        {view.addSubview($0)}
+         collectionView
+        ].forEach { view.addSubview($0) }
         
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             trackersLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             trackersLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -106,15 +111,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegate {
             collectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            errorImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            errorImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorImageView.widthAnchor.constraint(equalToConstant: 80),
-            errorImageView.heightAnchor.constraint(equalToConstant: 80),
-            
-            errorTextLabel.topAnchor.constraint(equalTo: errorImageView.bottomAnchor, constant: 8),
-            errorTextLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
@@ -139,17 +136,42 @@ extension TrackersViewController {
     }
 }
 
+// MARK: - UICollectionViewDataSource
+
 extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories.count
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCell", for: indexPath) as? TrackerCollectionViewCell
-        cell?.trackerView.backgroundColor = .red
-        return cell!
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier, for: indexPath) as! TrackerCollectionViewCell
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TrackerSupplementaryView.reuseIdentifier, for: indexPath) as! TrackerSupplementaryView
+        view.setTrackerSupplementaryView(text: "Домашний уют") 
+        return view
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 
-
+extension TrackersViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+        
+        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, 
+                                                         height: UIView.layoutFittingExpandedSize.height),
+                                                  withHorizontalFittingPriority: .required,
+                                                  verticalFittingPriority: .fittingSizeLevel)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height: CGFloat = 148
+        let interItemSpacing: CGFloat = 10
+        let width = (collectionView.bounds.width - interItemSpacing) / 2
+        return CGSize(width: width, height: height)
+    }
+}

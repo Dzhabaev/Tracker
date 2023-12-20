@@ -16,6 +16,7 @@ final class NewRegularViewController: UIViewController {
     private let dataForTableView = ["Категория", "Расписание"]
     private var selectedSchedule: [WeekDay] = []
     private var selectedCategory = String()
+    var categoryModel = CategoryModel()
     
     private let textField: UITextField = {
         let textField = UITextField()
@@ -63,20 +64,20 @@ final class NewRegularViewController: UIViewController {
         button.layer.masksToBounds = true
         button.layer.borderColor = UIColor.trRed.cgColor
         button.layer.borderWidth = 1
-        button.addTarget(self, action: #selector(didTabCancelButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(pushCancelButton), for: .touchUpInside)
         return button
     }()
     
     private let createButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .trGray
-        button.setTitleColor(.white, for: .normal)
-        button.setTitle("Создать", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.backgroundColor = .trBlack
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.addTarget(self, action: #selector(didTabCreateButton), for: .touchUpInside)
+        button.setTitle("Создать", for: .normal)
+        button.setTitleColor(.trWhite, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.addTarget(self, action: #selector(pushCreateButton), for: .touchUpInside)
         return button
     }()
     
@@ -89,16 +90,24 @@ final class NewRegularViewController: UIViewController {
         setupNavBar()
         setupView()
         setupConstraints()
+        
+        createButton.isEnabled = false
+        createButton.backgroundColor = .trGray
     }
     
     // MARK: - Actions
     
-    @objc private func didTabCancelButton() {
+    @objc private func pushCancelButton() {
         dismiss(animated: true)
     }
     
-    @objc private func didTabCreateButton() {
-        dismiss(animated: true)
+    @objc private func pushCreateButton() {
+        let newTracker = Tracker(
+            id: UUID(),
+            name: textField.text ?? "Default Name",
+            color: .colorSelection4,
+            emoji: "😪",
+            schedule: selectedSchedule)
     }
     
     // MARK: - Private Methods
@@ -239,6 +248,17 @@ extension NewRegularViewController: CategoryViewControllerDelegate {
 // MARK: - UITextFieldDelegate
 
 extension NewRegularViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text, !text.isEmpty {
+            createButton.isEnabled = true
+            createButton.backgroundColor = .trBlack
+        } else {
+            createButton.isEnabled = false
+            createButton.backgroundColor = .trGray
+        }
+        return true
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

@@ -19,6 +19,8 @@ final class CategoryViewController: UIViewController {
     
     weak var delegate: CategoryViewControllerDelegate?
     
+    var categoryModel = CategoryModel()
+    
     // MARK: - Private Properties
     
     private var dataForTableView: [String] = []
@@ -151,6 +153,12 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: NewCategoryViewControllerDelegate {
     func didCreateCategory(_ category: String) {
         dataForTableView.append(category)
+        categoryModel.categories.append(category)
+        tableView.reloadData()
+    }
+    
+    func updatedCategoryList(_ categories: [String]) {
+        dataForTableView = categories
         tableView.reloadData()
     }
 }
