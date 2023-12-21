@@ -10,6 +10,6 @@ import Foundation
 // Структура для хранения трекеров по категориям
 
 struct TrackerCategory {
-    let title: String // Заголовок категории
+    let categoryTitle: String // Заголовок категории
     var trackers: [Tracker] // Массив трекеров, относящихся к этой категории
 }
