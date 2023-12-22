@@ -81,11 +81,12 @@ final class TrackersViewController: UIViewController {
         return trackerLabel
     }()
     
-    private let searchField: UISearchTextField = {
+    private let searchTextField: UISearchTextField = {
         let searchField = UISearchTextField()
         searchField.translatesAutoresizingMaskIntoConstraints = false
         searchField.placeholder = "Поиск"
         searchField.font = UIFont.systemFont(ofSize: 17)
+        searchField.addTarget(self, action: #selector(searchTrackers), for: .allEvents)
         return searchField
     }()
     
@@ -112,17 +113,33 @@ final class TrackersViewController: UIViewController {
         return datePicker
     }()
     
-    private let errorImageView: UIImageView = {
+    private let emptyStateImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "errorImage")
+        imageView.image = UIImage(named: "glowingStar")
         return imageView
     }()
     
-    private let errorTextLabel: UILabel = {
+    private let emptyStateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Что будем отслеживать?"
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .trBlack
+        return label
+    }()
+    
+    private let noResultsImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "faceWithMonocle")
+        return imageView
+    }()
+    
+    private let noResultsLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Ничего не найдено"
         label.font = .systemFont(ofSize: 12)
         label.textColor = .trBlack
         return label
@@ -139,8 +156,13 @@ final class TrackersViewController: UIViewController {
         currentDate = Date()
         filterVisibleCategories(for: currentDate)
         emptyCollectionView()
+        emptySearchCollectionView()
         
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        
+        searchTextField.clearButtonMode = .always
+        searchTextField.addTarget(self, action: #selector(textFieldCleared), for: .editingChanged)
+
     }
     
     // MARK: - Actions
@@ -162,6 +184,40 @@ final class TrackersViewController: UIViewController {
         }
     }
     
+    @objc private func searchTrackers() {
+        guard let searchText = searchTextField.text, !searchText.isEmpty else {
+            filterVisibleCategories(for: currentDate)
+            return
+        }
+        let filteredCategories = categories.compactMap { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                return tracker.name.localizedCaseInsensitiveContains(searchText)
+            }
+            return filteredTrackers.isEmpty ? nil : TrackerCategory(
+                categoryTitle: category.categoryTitle,
+                trackers: filteredTrackers
+            )
+        }
+        visibleCategories = filteredCategories
+        if visibleCategories.isEmpty {
+            showNoResultsImage()
+        } else {
+            hideNoResultsImage()
+        }
+        collectionView.reloadData()
+    }
+    
+    @objc private func textFieldCleared() {
+        if searchTextField.text?.isEmpty ?? true {
+            filterVisibleCategories(for: currentDate)
+            if visibleCategories.isEmpty {
+                showNoResultsImage()
+            } else {
+                hideNoResultsImage()
+            }
+        }
+    }
+    
     // MARK: - Private Methods
     
     private func setupNavigationBar() {
@@ -177,10 +233,12 @@ final class TrackersViewController: UIViewController {
     
     private func setupViews() {
         [trackersLabel,
-         searchField,
+         searchTextField,
          collectionView,
-         errorImageView,
-         errorTextLabel
+         emptyStateImageView,
+         emptyStateLabel,
+         noResultsImageView,
+         noResultsLabel
         ].forEach { view.addSubview($0) }
         
         collectionView.delegate = self
@@ -192,23 +250,31 @@ final class TrackersViewController: UIViewController {
             trackersLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             trackersLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             
-            searchField.topAnchor.constraint(equalTo: trackersLabel.bottomAnchor, constant: 7),
-            searchField.heightAnchor.constraint(equalToConstant: 36),
-            searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            searchTextField.topAnchor.constraint(equalTo: trackersLabel.bottomAnchor, constant: 7),
+            searchTextField.heightAnchor.constraint(equalToConstant: 36),
+            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            collectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            errorImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            errorImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorImageView.widthAnchor.constraint(equalToConstant: 80),
-            errorImageView.heightAnchor.constraint(equalToConstant: 80),
+            emptyStateImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            emptyStateImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateImageView.widthAnchor.constraint(equalToConstant: 80),
+            emptyStateImageView.heightAnchor.constraint(equalToConstant: 80),
             
-            errorTextLabel.topAnchor.constraint(equalTo: errorImageView.bottomAnchor, constant: 8),
-            errorTextLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            emptyStateLabel.topAnchor.constraint(equalTo: emptyStateImageView.bottomAnchor, constant: 8),
+            emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            noResultsImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            noResultsImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noResultsImageView.widthAnchor.constraint(equalToConstant: 80),
+            noResultsImageView.heightAnchor.constraint(equalToConstant: 80),
+            
+            noResultsLabel.topAnchor.constraint(equalTo: noResultsImageView.bottomAnchor, constant: 8),
+            noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
     
@@ -216,18 +282,37 @@ final class TrackersViewController: UIViewController {
         return model.trackerID == trackerId && Calendar.current.isDate(model.date, inSameDayAs: currentDate)
     }
     
+    private func setEmptyStateVisibility(isHidden: Bool, for imageView: UIImageView, label: UILabel) {
+        imageView.isHidden = isHidden
+        label.isHidden = isHidden
+    }
+
     private func emptyCollectionView() {
-        visibleCategories.isEmpty ? showErrorViewAndText() : doNotShowErrorViewAndText()
+        setEmptyStateVisibility(isHidden: !visibleCategories.isEmpty, for: emptyStateImageView, label: emptyStateLabel)
     }
     
-    private func showErrorViewAndText() {
-        errorImageView.isHidden = false
-        errorTextLabel.isHidden = false
+    private func emptySearchCollectionView() {
+        setEmptyStateVisibility(isHidden: !visibleCategories.isEmpty, for: noResultsImageView, label: noResultsLabel)
     }
     
-    private func doNotShowErrorViewAndText() {
-        errorImageView.isHidden = true
-        errorTextLabel.isHidden = true
+    private func showEmptyStateImage() {
+        emptyStateImageView.isHidden = false
+        emptyStateLabel.isHidden = false
+    }
+    
+    private func hideEmptyStateImage() {
+        emptyStateImageView.isHidden = true
+        emptyStateLabel.isHidden = true
+    }
+    
+    private func showNoResultsImage() {
+        noResultsImageView.isHidden = false
+        noResultsLabel.isHidden = false
+    }
+    
+    private func hideNoResultsImage() {
+        noResultsImageView.isHidden = true
+        noResultsLabel.isHidden = true
     }
     
     private func filterVisibleCategories(for selectedDate: Date) {
