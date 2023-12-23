@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TrackersViewControllerDelegate: AnyObject {
-    func createdTracker(tracker: Tracker)
+    func createdTracker(tracker: Tracker, categoryTitle: String)
 }
 
 // MARK: - TrackersViewController
@@ -415,8 +415,8 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 // MARK: - TrackersViewControllerDelegate
 
 extension TrackersViewController: TrackersViewControllerDelegate {
-    func createdTracker(tracker: Tracker) {
-        categories[0].trackers.append(tracker)
+    func createdTracker(tracker: Tracker, categoryTitle: String) {
+        categories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
         filterVisibleCategories(for: currentDate)
         collectionView.reloadData()
     }

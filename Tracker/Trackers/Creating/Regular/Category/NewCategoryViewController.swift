@@ -11,7 +11,6 @@ import UIKit
 
 protocol NewCategoryViewControllerDelegate: AnyObject {
     func didCreateCategory(_ category: String)
-    func updatedCategoryList(_ categories: [String])
 }
 
 
@@ -74,8 +73,7 @@ final class NewCategoryViewController: UIViewController {
         guard let text = textField.text, !text.isEmpty else { return }
         delegate?.didCreateCategory(text)
         categoryModel.categories.append(text)
-        delegate?.updatedCategoryList(categoryModel.categories)
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     // MARK: - Private Methods

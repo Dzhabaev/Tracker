@@ -114,7 +114,7 @@ final class NewRegularViewController: UIViewController {
             color: .colorSelection8,
             emoji: "🙏",
             schedule: selectedSchedule)
-        delegate?.createTracker(tracker: newTracker)
+        delegate?.createTracker(tracker: newTracker, categoryTitle: selectedCategory)
         dismiss(animated: true)
     }
     

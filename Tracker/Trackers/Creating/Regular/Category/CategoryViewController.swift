@@ -64,10 +64,9 @@ final class CategoryViewController: UIViewController {
     
     @objc private func pushAddCategoryButton() {
         let newCategoryViewController = NewCategoryViewController()
+        newCategoryViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: newCategoryViewController)
-        present(navigationController, animated: true) {
-            newCategoryViewController.delegate = self
-        }
+        present(navigationController, animated: true)
     }
     
     // MARK: - Private Methods
@@ -87,10 +86,10 @@ final class CategoryViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            tableView.heightAnchor.constraint(equalToConstant: 525),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -24),
             
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -129,6 +128,12 @@ extension CategoryViewController: UITableViewDataSource {
         }
         cell.textLabel?.text = dataForTableView[indexPath.row]
         cell.backgroundColor = .trBackgroundDay
+        cell.separatorInset = UIEdgeInsets(
+            top: 0,
+            left: 16,
+            bottom: 0,
+            right: 16
+        )
         
         if indexPath.row == selectedCategoryIndex {
             cell.accessoryType = .checkmark
@@ -136,11 +141,6 @@ extension CategoryViewController: UITableViewDataSource {
             cell.accessoryType = .none
         }
         
-        if indexPath.row == 0 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        } else {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-        }
         return cell
     }
     
@@ -153,9 +153,12 @@ extension CategoryViewController: UITableViewDataSource {
 
 extension CategoryViewController: NewCategoryViewControllerDelegate {
     func didCreateCategory(_ category: String) {
-        dataForTableView.append(category)
-        categoryModel.categories.append(category)
-        tableView.reloadData()
+        if !dataForTableView.contains(category) {
+            dataForTableView.append(category)
+            tableView.invalidateIntrinsicContentSize()
+            tableView.layoutIfNeeded()
+            tableView.reloadData()
+        }
     }
     
     func updatedCategoryList(_ categories: [String]) {
