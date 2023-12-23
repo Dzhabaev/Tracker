@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TrackersViewControllerDelegate: AnyObject {
+    func createdTracker(tracker: Tracker)
+}
+
 // MARK: - TrackersViewController
 
 final class TrackersViewController: UIViewController {
@@ -162,14 +166,15 @@ final class TrackersViewController: UIViewController {
         
         searchTextField.clearButtonMode = .always
         searchTextField.addTarget(self, action: #selector(textFieldCleared), for: .editingChanged)
-
     }
     
     // MARK: - Actions
     
     @objc private func pushAddTrackerButton() {
-        let creatingTrackerViewController = UINavigationController(rootViewController: CreatingTrackerViewController())
-        present(creatingTrackerViewController, animated: true)
+        let creatingTrackerViewController = CreatingTrackerViewController()
+        creatingTrackerViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: creatingTrackerViewController)
+        present(navigationController, animated: true)
     }
     
     @objc private func dateChanged(_ picker: UIDatePicker) {
@@ -286,7 +291,7 @@ final class TrackersViewController: UIViewController {
         imageView.isHidden = isHidden
         label.isHidden = isHidden
     }
-
+    
     private func emptyCollectionView() {
         setEmptyStateVisibility(isHidden: !visibleCategories.isEmpty, for: emptyStateImageView, label: emptyStateLabel)
     }
@@ -403,6 +408,16 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
                 return false
             }
         }
+        collectionView.reloadData()
+    }
+}
+
+// MARK: - TrackersViewControllerDelegate
+
+extension TrackersViewController: TrackersViewControllerDelegate {
+    func createdTracker(tracker: Tracker) {
+        categories[0].trackers.append(tracker)
+        filterVisibleCategories(for: currentDate)
         collectionView.reloadData()
     }
 }

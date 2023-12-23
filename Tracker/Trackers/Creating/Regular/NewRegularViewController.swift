@@ -11,6 +11,10 @@ import UIKit
 
 final class NewRegularViewController: UIViewController {
     
+    // MARK: - Public Properties
+    
+    weak var delegate: CreatingTrackerViewControllerDelegate?
+    
     // MARK: - Private Properties
     
     private let dataForTableView = ["Категория", "Расписание"]
@@ -99,15 +103,19 @@ final class NewRegularViewController: UIViewController {
     
     @objc private func pushCancelButton() {
         dismiss(animated: true)
+        delegate?.cancelCreateTracker()
     }
     
     @objc private func pushCreateButton() {
+        guard let trackerName = textField.text else { return }
         let newTracker = Tracker(
             id: UUID(),
-            name: textField.text ?? "Default Name",
-            color: .colorSelection4,
-            emoji: "😪",
+            name: trackerName,
+            color: .colorSelection8,
+            emoji: "🙏",
             schedule: selectedSchedule)
+        delegate?.createTracker(tracker: newTracker)
+        dismiss(animated: true)
     }
     
     // MARK: - Private Methods
@@ -232,8 +240,10 @@ extension NewRegularViewController: UITableViewDataSource {
 
 extension NewRegularViewController: ScheduleViewControllerDelegate {
     func updateScheduleInfo(_ selectedDays: [WeekDay]) {
-        let abbreviatedDays = selectedDays.map { $0.shortValue }.joined(separator: ", ")
-        setSubTitle(abbreviatedDays, forCellAt: IndexPath(row: 1, section: 0))
+        self.selectedSchedule = selectedDays
+        let subText = selectedSchedule.map { $0.shortValue }.joined(separator: ", ")
+        setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
+        tableView.reloadData()
     }
 }
 
@@ -258,7 +268,6 @@ extension NewRegularViewController: UITextFieldDelegate {
         }
         return true
     }
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

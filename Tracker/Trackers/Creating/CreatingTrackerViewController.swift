@@ -7,7 +7,16 @@
 
 import UIKit
 
+protocol CreatingTrackerViewControllerDelegate: AnyObject {
+    func createTracker(tracker: Tracker)
+    func cancelCreateTracker()
+}
+
+// MARK: - CreatingTrackerViewController
+
 final class CreatingTrackerViewController: UIViewController {
+    
+    weak var delegate: TrackersViewControllerDelegate?
     
     // MARK: - Private Properties
     
@@ -57,11 +66,14 @@ final class CreatingTrackerViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func regularButtonClicked() {
-        let newRegularViewController = UINavigationController(rootViewController: NewRegularViewController())
-        present(newRegularViewController, animated: true)
+        let newRegularViewController = NewRegularViewController()
+        newRegularViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: newRegularViewController)
+        present(navigationController, animated: true)
     }
     
     @objc private func irregularButtonClicked() {
+        dismiss(animated: true)
     }
     
     // MARK: - Private Methods
@@ -87,5 +99,19 @@ final class CreatingTrackerViewController: UIViewController {
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.heightAnchor.constraint(equalToConstant: 136)
         ])
+    }
+}
+
+// MARK: - CreatingTrackerViewControllerDelegate
+
+extension CreatingTrackerViewController: CreatingTrackerViewControllerDelegate {
+    func createTracker(tracker: Tracker) {
+        delegate?.createdTracker(tracker: tracker)
+        dismiss(animated: true)
+        cancelCreateTracker()
+    }
+    
+    func cancelCreateTracker() {
+        dismiss(animated: true)
     }
 }

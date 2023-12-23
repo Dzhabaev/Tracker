@@ -54,6 +54,7 @@ final class CategoryViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .trWhite
+        navigationItem.hidesBackButton = true
         setupNavBar()
         setupView()
         setupConstraints()

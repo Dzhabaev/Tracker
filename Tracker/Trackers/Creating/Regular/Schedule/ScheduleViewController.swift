@@ -51,6 +51,7 @@ final class ScheduleViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .trWhite
+        navigationItem.hidesBackButton = true
         setupNavBar()
         setupView()
         setupConstraints()
