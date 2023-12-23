@@ -17,59 +17,7 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    var categories: [TrackerCategory] = [
-        TrackerCategory(
-            categoryTitle: "Домашний уют",
-            trackers: [
-                Tracker(
-                    id: UUID(),
-                    name: "Поливать растения",
-                    color: .colorSelection5,
-                    emoji: "❤️",
-                    schedule: [
-                        .monday,
-                        .tuesday,
-                        .thursday
-                    ]
-                )
-            ]
-        ),
-        
-        TrackerCategory(
-            categoryTitle: "Радостные мелочи",
-            trackers: [
-                Tracker(
-                    id: UUID(),
-                    name: "Кошка заслонила камеру на созвоне",
-                    color: .colorSelection2,
-                    emoji: "😻",
-                    schedule: [
-                        .wednesday,
-                        .thursday
-                    ]
-                ),
-                Tracker(
-                    id: UUID(),
-                    name: "Бабушка прислала открытку в вотсапе",
-                    color: .colorSelection1,
-                    emoji: "🌺",
-                    schedule: [
-                        .friday
-                    ]
-                ),
-                Tracker(
-                    id: UUID(),
-                    name: "Свидания в апреле",
-                    color: .colorSelection14,
-                    emoji: "❤️",
-                    schedule: [
-                        .saturday
-                    ]
-                )
-            ]
-        )
-    ]
-    
+    var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
     var visibleCategories: [TrackerCategory] = []
     var currentDate: Date = .init()
@@ -164,8 +112,13 @@ final class TrackersViewController: UIViewController {
         
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         
+        searchTextField.delegate = self
         searchTextField.clearButtonMode = .always
         searchTextField.addTarget(self, action: #selector(textFieldCleared), for: .editingChanged)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
     }
     
     // MARK: - Actions
@@ -206,8 +159,10 @@ final class TrackersViewController: UIViewController {
         visibleCategories = filteredCategories
         if visibleCategories.isEmpty {
             showNoResultsImage()
+            hideEmptyStateImage()
         } else {
             hideNoResultsImage()
+            hideEmptyStateImage()
         }
         collectionView.reloadData()
     }
@@ -220,7 +175,12 @@ final class TrackersViewController: UIViewController {
             } else {
                 hideNoResultsImage()
             }
+            hideNoResultsImage()
         }
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     // MARK: - Private Methods
@@ -293,11 +253,21 @@ final class TrackersViewController: UIViewController {
     }
     
     private func emptyCollectionView() {
-        setEmptyStateVisibility(isHidden: !visibleCategories.isEmpty, for: emptyStateImageView, label: emptyStateLabel)
+        if visibleCategories.isEmpty && searchTextField.text?.isEmpty ?? true {
+            showEmptyStateImage()
+            hideNoResultsImage()
+        } else {
+            hideEmptyStateImage()
+        }
     }
     
     private func emptySearchCollectionView() {
-        setEmptyStateVisibility(isHidden: !visibleCategories.isEmpty, for: noResultsImageView, label: noResultsLabel)
+        if visibleCategories.isEmpty && !(searchTextField.text?.isEmpty ?? true) {
+            showNoResultsImage()
+            hideEmptyStateImage()
+        } else {
+            hideNoResultsImage()
+        }
     }
     
     private func showEmptyStateImage() {
@@ -419,5 +389,15 @@ extension TrackersViewController: TrackersViewControllerDelegate {
         categories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
         filterVisibleCategories(for: currentDate)
         collectionView.reloadData()
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension TrackersViewController: UISearchTextFieldDelegate {
+    private func textFieldShouldReturn(_ textField: UISearchTextField) -> Bool {
+        textField.resignFirstResponder()
+        hideNoResultsImage()
+        return true
     }
 }
