@@ -28,6 +28,9 @@ final class ScheduleViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
+        tableView.separatorStyle = .singleLine
+        tableView.tableHeaderView = UIView()
+        tableView.separatorColor = .trGray
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
         return tableView
     }()
@@ -115,15 +118,9 @@ final class ScheduleViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource (UITableViewDelegate)
 
-// MARK: - UITableViewDelegate
-
-extension ScheduleViewController: UITableViewDelegate {
-}
-
-// MARK: - UITableViewDataSource
-
-extension ScheduleViewController: UITableViewDataSource {
+extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return WeekDay.allCases.count
     }
@@ -142,6 +139,10 @@ extension ScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+        if indexPath.row == WeekDay.allCases.count - 1 {
+            return 76
+        } else {
+            return 75
+        }
     }
 }

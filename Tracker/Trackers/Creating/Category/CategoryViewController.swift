@@ -19,8 +19,6 @@ final class CategoryViewController: UIViewController {
     
     weak var delegate: CategoryViewControllerDelegate?
     
-    var categoryModel = CategoryModel()
-    
     // MARK: - Private Properties
     
     private var dataForTableView: [String] = []
@@ -31,6 +29,9 @@ final class CategoryViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
+        tableView.separatorStyle = .singleLine
+        tableView.tableHeaderView = UIView()
+        tableView.separatorColor = .trGray
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
         return tableView
     }()
@@ -46,6 +47,24 @@ final class CategoryViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(pushAddCategoryButton), for: .touchUpInside)
         return button
+    }()
+    
+    private let emptyStateImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "glowingStar")
+        return imageView
+    }()
+    
+    private let emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 2
+        label.text = "Привычки и события можно\nобъединить по смыслу"
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .trBlack
+        return label
     }()
     
     // MARK: - UIViewController Lifecycle
@@ -77,7 +96,9 @@ final class CategoryViewController: UIViewController {
     
     private func setupView() {
         [tableView,
-         addCategoryButton
+         addCategoryButton,
+         emptyStateImageView,
+         emptyStateLabel
         ].forEach { view.addSubview($0) }
         
         tableView.delegate = self
@@ -94,8 +115,36 @@ final class CategoryViewController: UIViewController {
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            
+            emptyStateImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            emptyStateImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateImageView.widthAnchor.constraint(equalToConstant: 80),
+            emptyStateImageView.heightAnchor.constraint(equalToConstant: 80),
+            
+            emptyStateLabel.topAnchor.constraint(equalTo: emptyStateImageView.bottomAnchor, constant: 8),
+            emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+    
+    private func showEmptyStateImage() {
+        emptyStateImageView.isHidden = false
+        emptyStateLabel.isHidden = false
+        tableView.isHidden = true
+    }
+    
+    private func hideEmptyStateImage() {
+        emptyStateImageView.isHidden = true
+        emptyStateLabel.isHidden = true
+        tableView.isHidden = false
+    }
+    
+    private func updateEmptyStateVisibility() {
+        if dataForTableView.isEmpty {
+            showEmptyStateImage()
+        } else {
+            hideEmptyStateImage()
+        }
     }
 }
 
@@ -135,12 +184,27 @@ extension CategoryViewController: UITableViewDataSource {
             right: 16
         )
         
+        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius = 16.0
+        
+        if dataForTableView.count == 1 {
+            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        } else {
+            let numberOfRows = tableView.numberOfRows(inSection: indexPath.section)
+            if indexPath.row == 0 {
+                cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            } else if indexPath.row == numberOfRows - 1 {
+                cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            } else {
+                cell.layer.maskedCorners = []
+            }
+        }
+        
         if indexPath.row == selectedCategoryIndex {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
         }
-        
         return cell
     }
     
@@ -158,11 +222,13 @@ extension CategoryViewController: NewCategoryViewControllerDelegate {
             tableView.invalidateIntrinsicContentSize()
             tableView.layoutIfNeeded()
             tableView.reloadData()
+            updateEmptyStateVisibility()
         }
     }
     
     func updatedCategoryList(_ categories: [String]) {
         dataForTableView = categories
         tableView.reloadData()
+        updateEmptyStateVisibility()
     }
 }

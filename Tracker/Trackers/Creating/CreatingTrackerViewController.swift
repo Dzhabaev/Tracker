@@ -73,7 +73,10 @@ final class CreatingTrackerViewController: UIViewController {
     }
     
     @objc private func irregularButtonClicked() {
-        dismiss(animated: true)
+        let newIrregularViewController = NewIrregularViewController()
+        newIrregularViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: newIrregularViewController)
+        present(navigationController, animated: true)
     }
     
     // MARK: - Private Methods

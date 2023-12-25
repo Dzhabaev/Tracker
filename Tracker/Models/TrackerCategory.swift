@@ -11,5 +11,5 @@ import Foundation
 
 struct TrackerCategory {
     let categoryTitle: String // Заголовок категории
-    var trackers: [Tracker] // Массив трекеров, относящихся к этой категории
+    let trackers: [Tracker] // Массив трекеров, относящихся к этой категории
 }

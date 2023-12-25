@@ -6,10 +6,10 @@
 	<dict>
 		<key>UIColorName</key>
 		<string>trBlue</string>
-		<key>UIImageName</key>
-		<string>logoImage</string>
 		<key>UIImageRespectsSafeAreaInsets</key>
 		<true/>
+		<key>UIImageName</key>
+		<string>trackerLogoImage</string>
 	</dict>
 </dict>
 </plist>

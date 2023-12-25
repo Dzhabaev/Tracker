@@ -147,16 +147,17 @@ final class TrackersViewController: UIViewController {
             filterVisibleCategories(for: currentDate)
             return
         }
-        let filteredCategories = categories.compactMap { category in
+        let filteredCategories = categories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
-                return tracker.name.localizedCaseInsensitiveContains(searchText)
+                return tracker.name.localizedCaseInsensitiveContains(searchText) &&
+                tracker.schedule.contains(WeekDay(rawValue: Calendar.current.component(.weekday, from: currentDate)) ?? .monday)
             }
             return filteredTrackers.isEmpty ? nil : TrackerCategory(
                 categoryTitle: category.categoryTitle,
                 trackers: filteredTrackers
             )
         }
-        visibleCategories = filteredCategories
+        visibleCategories = filteredCategories.compactMap { $0 }
         if visibleCategories.isEmpty {
             showNoResultsImage()
             hideEmptyStateImage()
@@ -171,9 +172,9 @@ final class TrackersViewController: UIViewController {
         if searchTextField.text?.isEmpty ?? true {
             filterVisibleCategories(for: currentDate)
             if visibleCategories.isEmpty {
-                showNoResultsImage()
+                showEmptyStateImage()
             } else {
-                hideNoResultsImage()
+                hideEmptyStateImage()
             }
             hideNoResultsImage()
         }

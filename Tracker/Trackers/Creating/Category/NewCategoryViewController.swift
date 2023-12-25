@@ -20,8 +20,6 @@ final class NewCategoryViewController: UIViewController {
     
     weak var delegate: NewCategoryViewControllerDelegate?
     
-    var categoryModel = CategoryModel()
-    
     // MARK: - Private Properties
     
     private let textField: UITextField = {
@@ -62,7 +60,6 @@ final class NewCategoryViewController: UIViewController {
         setupNavBar()
         setupView()
         setupConstraints()
-
         doneButton.isEnabled = false
         doneButton.backgroundColor = .trGray
     }
@@ -72,7 +69,6 @@ final class NewCategoryViewController: UIViewController {
     @objc private func pushDoneButton() {
         guard let text = textField.text, !text.isEmpty else { return }
         delegate?.didCreateCategory(text)
-        categoryModel.categories.append(text)
         dismiss(animated: true)
     }
     

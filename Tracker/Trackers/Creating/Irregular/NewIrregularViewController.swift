@@ -1,15 +1,13 @@
 //
-//  NewRegularViewController.swift
+//  NewIrregularViewController.swift
 //  Tracker
 //
-//  Created by Chingiz on 16.12.2023.
+//  Created by Chingiz on 24.12.2023.
 //
 
 import UIKit
 
-// MARK: - UIViewController
-
-final class NewRegularViewController: UIViewController {
+final class NewIrregularViewController: UIViewController {
     
     // MARK: - Public Properties
     
@@ -17,7 +15,7 @@ final class NewRegularViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let dataForTableView = ["Категория", "Расписание"]
+    private let dataForTableView = "Категория"
     private var selectedSchedule: [WeekDay] = []
     private var selectedCategory = String()
     
@@ -43,6 +41,7 @@ final class NewRegularViewController: UIViewController {
         tableView.backgroundColor = .trBackgroundDay
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
+        tableView.separatorStyle = .none
         tableView.register(EventButtonCell.self, forCellReuseIdentifier: EventButtonCell.reuseIdentifier)
         return tableView
     }()
@@ -107,12 +106,19 @@ final class NewRegularViewController: UIViewController {
     
     @objc private func pushCreateButton() {
         guard let trackerName = textField.text else { return }
+        let currentDate = Date()
+        let currentWeekday = Calendar.current.component(.weekday, from: currentDate)
+        let newSchedule = Schedule(value: WeekDay(rawValue: currentWeekday) ?? .sunday, isOn: true)
+        let scheduleArray = [newSchedule]
+        let weekdayArray = scheduleArray.map { $0.value }
+        
         let newTracker = Tracker(
             id: UUID(),
             name: trackerName,
-            color: .colorSelection8,
-            emoji: "🙏",
-            schedule: selectedSchedule)
+            color: .colorSelection12,
+            emoji: "🏓",
+            schedule: weekdayArray
+        )
         delegate?.createTracker(tracker: newTracker, categoryTitle: selectedCategory)
         dismiss(animated: true)
     }
@@ -120,7 +126,7 @@ final class NewRegularViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupNavBar(){
-        navigationItem.title = "Новая привычка"
+        navigationItem.title = "Новое нерегулярное событие"
     }
     
     private func setupView() {
@@ -146,7 +152,7 @@ final class NewRegularViewController: UIViewController {
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             
-            tableView.heightAnchor.constraint(equalToConstant: 150),
+            tableView.heightAnchor.constraint(equalToConstant: 75),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
@@ -165,20 +171,6 @@ final class NewRegularViewController: UIViewController {
         cell.set(subText: subTitle)
     }
     
-    private func createSchedule(schedule: [WeekDay]) {
-        self.selectedSchedule = schedule
-        let subText = selectedSchedule.map { $0.shortValue }.joined(separator: ", ")
-        setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
-        tableView.reloadData()
-    }
-    
-    private func didSelectDays(_ days: [WeekDay]) {
-        let abbreviatedDays = days.map { $0.shortValue }.joined(separator: ", ")
-        if let scheduleCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? EventButtonCell {
-            scheduleCell.set(subText: abbreviatedDays)
-        }
-    }
-    
     private func updateCategory(_ category: String) {
         selectedCategory = category
         setCategoryTitle(selectedCategory)
@@ -191,40 +183,28 @@ final class NewRegularViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 
-extension NewRegularViewController: UITableViewDelegate {
+extension NewIrregularViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 0 {
-            let categoryViewController = CategoryViewController()
-            categoryViewController.delegate = self
-            navigationController?.pushViewController(categoryViewController, animated: true)
-        } else if indexPath.row == 1 {
-            let scheduleViewController = ScheduleViewController()
-            scheduleViewController.delegate = self
-            navigationController?.pushViewController(scheduleViewController, animated: true)
-        }
+        guard indexPath.row == 0 else { return }
+        let categoryViewController = CategoryViewController()
+        categoryViewController.delegate = self
+        navigationController?.pushViewController(categoryViewController, animated: true)
     }
 }
 
 // MARK: - UITableViewDataSource
 
-extension NewRegularViewController: UITableViewDataSource {
+extension NewIrregularViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataForTableView.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EventButtonCell.reuseIdentifier, for: indexPath) as! EventButtonCell
-        
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .trBackgroundDay
-        if indexPath.row == 0 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            cell.titleLabel.text = dataForTableView[indexPath.row]
-        } else {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-            cell.titleLabel.text = dataForTableView[indexPath.row]
-        }
+        cell.titleLabel.text = dataForTableView
         return cell
     }
     
@@ -233,20 +213,9 @@ extension NewRegularViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - ScheduleViewControllerDelegate
-
-extension NewRegularViewController: ScheduleViewControllerDelegate {
-    func updateScheduleInfo(_ selectedDays: [WeekDay]) {
-        self.selectedSchedule = selectedDays
-        let subText = selectedSchedule.map { $0.shortValue }.joined(separator: ", ")
-        setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
-        tableView.reloadData()
-    }
-}
-
 // MARK: - CategoryViewControllerDelegate
 
-extension NewRegularViewController: CategoryViewControllerDelegate {
+extension NewIrregularViewController: CategoryViewControllerDelegate {
     func didSelectCategory(_ category: String) {
         updateCategory(category)
     }
@@ -254,7 +223,7 @@ extension NewRegularViewController: CategoryViewControllerDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension NewRegularViewController: UITextFieldDelegate {
+extension NewIrregularViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let text = textField.text, !text.isEmpty {
             createButton.isEnabled = true

@@ -1,5 +1,5 @@
 //
-//  RegularButtonCell.swift
+//  EventButtonCell.swift
 //  Tracker
 //
 //  Created by Chingiz on 16.12.2023.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-final class RegularButtonCell: UITableViewCell {
+final class EventButtonCell: UITableViewCell {
     
-    static let reuseIdentifier = "RegularButtonCell"
+    static let reuseIdentifier = "EventButtonCell"
     
     // MARK: - Private Properties
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
@@ -66,13 +66,17 @@ final class RegularButtonCell: UITableViewCell {
         contentView.addSubview(subtitleLabel)
         
         NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
             subtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4)
+            subtitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14)
         ])
+        
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        subtitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 }

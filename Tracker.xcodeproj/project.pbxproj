@@ -16,15 +16,15 @@
 		722D10EB2B2F508000C33462 /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722D10EA2B2F508000C33462 /* NewCategoryViewController.swift */; };
 		72600C782B2DB2CB00F4019C /* NewRegularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */; };
 		72600C7A2B2DBE3800F4019C /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C792B2DBE3800F4019C /* UITextField+Extension.swift */; };
-		72600C7D2B2DDBCC00F4019C /* RegularButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C7C2B2DDBCC00F4019C /* RegularButtonCell.swift */; };
+		72600C7D2B2DDBCC00F4019C /* EventButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C7C2B2DDBCC00F4019C /* EventButtonCell.swift */; };
 		72600C7F2B2DE85D00F4019C /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C7E2B2DE85D00F4019C /* ScheduleViewController.swift */; };
 		72600C832B2E26D100F4019C /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C822B2E26D100F4019C /* Schedule.swift */; };
 		726854542B3302C7004F827D /* TrackerSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726854532B3302C7004F827D /* TrackerSupplementaryView.swift */; };
+		72730B392B38B0AA0044F7F8 /* NewIrregularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72730B382B38B0AA0044F7F8 /* NewIrregularViewController.swift */; };
 		727A72A02B30AA88008FFC61 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727A729F2B30AA88008FFC61 /* CustomTableViewCell.swift */; };
 		72DB87BE2B29F3F400190ACD /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87BD2B29F3F400190ACD /* Tracker.swift */; };
 		72DB87C02B29F40300190ACD /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87BF2B29F40300190ACD /* TrackerCategory.swift */; };
 		72DB87C22B29F40E00190ACD /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87C12B29F40E00190ACD /* TrackerRecord.swift */; };
-		72DDBCD72B32DC9200304E5E /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DDBCD62B32DC9200304E5E /* CategoryModel.swift */; };
 		72FB73482B2CB91000092439 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FB73472B2CB91000092439 /* TrackerCollectionViewCell.swift */; };
 		72FB734A2B2CD58800092439 /* CreatingTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FB73492B2CD58800092439 /* CreatingTrackerViewController.swift */; };
 /* End PBXBuildFile section */
@@ -41,15 +41,15 @@
 		722D10EA2B2F508000C33462 /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRegularViewController.swift; sourceTree = "<group>"; };
 		72600C792B2DBE3800F4019C /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
-		72600C7C2B2DDBCC00F4019C /* RegularButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularButtonCell.swift; sourceTree = "<group>"; };
+		72600C7C2B2DDBCC00F4019C /* EventButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventButtonCell.swift; sourceTree = "<group>"; };
 		72600C7E2B2DE85D00F4019C /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		72600C822B2E26D100F4019C /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		726854532B3302C7004F827D /* TrackerSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSupplementaryView.swift; sourceTree = "<group>"; };
+		72730B382B38B0AA0044F7F8 /* NewIrregularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIrregularViewController.swift; sourceTree = "<group>"; };
 		727A729F2B30AA88008FFC61 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		72DB87BD2B29F3F400190ACD /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		72DB87BF2B29F40300190ACD /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		72DB87C12B29F40E00190ACD /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
-		72DDBCD62B32DC9200304E5E /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		72FB73472B2CB91000092439 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		72FB73492B2CD58800092439 /* CreatingTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingTrackerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,14 +84,14 @@
 		720BBE3B2B16006900888F8A /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				720BBE4A2B16006B00888F8A /* Info.plist */,
+				720BBE452B16006B00888F8A /* Assets.xcassets */,
 				720BBE3C2B16006900888F8A /* AppDelegate.swift */,
 				720BBE522B174C5D00888F8A /* TabBarController.swift */,
 				727A72A22B30AF6B008FFC61 /* Trackers */,
 				727A72A32B30AF99008FFC61 /* Statistic */,
 				72DB87BC2B29F3E000190ACD /* Models */,
 				727A72A12B30AF2D008FFC61 /* Extension */,
-				720BBE452B16006B00888F8A /* Assets.xcassets */,
-				720BBE4A2B16006B00888F8A /* Info.plist */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -117,9 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */,
-				72600C7C2B2DDBCC00F4019C /* RegularButtonCell.swift */,
 				727A729F2B30AA88008FFC61 /* CustomTableViewCell.swift */,
-				722D10E72B2F476B00C33462 /* Category */,
 				722D10E62B2F471B00C33462 /* Schedule */,
 			);
 			path = Regular;
@@ -129,9 +127,20 @@
 			isa = PBXGroup;
 			children = (
 				72FB73492B2CD58800092439 /* CreatingTrackerViewController.swift */,
+				72600C7C2B2DDBCC00F4019C /* EventButtonCell.swift */,
 				72600C7B2B2DDAE400F4019C /* Regular */,
+				72730B372B38B07D0044F7F8 /* Irregular */,
+				722D10E72B2F476B00C33462 /* Category */,
 			);
 			path = Creating;
+			sourceTree = "<group>";
+		};
+		72730B372B38B07D0044F7F8 /* Irregular */ = {
+			isa = PBXGroup;
+			children = (
+				72730B382B38B0AA0044F7F8 /* NewIrregularViewController.swift */,
+			);
+			path = Irregular;
 			sourceTree = "<group>";
 		};
 		727A72A12B30AF2D008FFC61 /* Extension */ = {
@@ -168,7 +177,6 @@
 				72DB87BF2B29F40300190ACD /* TrackerCategory.swift */,
 				72DB87C12B29F40E00190ACD /* TrackerRecord.swift */,
 				72600C822B2E26D100F4019C /* Schedule.swift */,
-				72DDBCD62B32DC9200304E5E /* CategoryModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -249,9 +257,9 @@
 				722D10E92B2F47FD00C33462 /* CategoryViewController.swift in Sources */,
 				72DB87C22B29F40E00190ACD /* TrackerRecord.swift in Sources */,
 				727A72A02B30AA88008FFC61 /* CustomTableViewCell.swift in Sources */,
+				72730B392B38B0AA0044F7F8 /* NewIrregularViewController.swift in Sources */,
 				720BBE412B16006900888F8A /* TrackersViewController.swift in Sources */,
-				72DDBCD72B32DC9200304E5E /* CategoryModel.swift in Sources */,
-				72600C7D2B2DDBCC00F4019C /* RegularButtonCell.swift in Sources */,
+				72600C7D2B2DDBCC00F4019C /* EventButtonCell.swift in Sources */,
 				72600C832B2E26D100F4019C /* Schedule.swift in Sources */,
 				72600C7F2B2DE85D00F4019C /* ScheduleViewController.swift in Sources */,
 				72600C782B2DB2CB00F4019C /* NewRegularViewController.swift in Sources */,
