@@ -25,6 +25,8 @@
 		72DB87BE2B29F3F400190ACD /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87BD2B29F3F400190ACD /* Tracker.swift */; };
 		72DB87C02B29F40300190ACD /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87BF2B29F40300190ACD /* TrackerCategory.swift */; };
 		72DB87C22B29F40E00190ACD /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87C12B29F40E00190ACD /* TrackerRecord.swift */; };
+		72E851012B3C24B5003884A6 /* EmojisAndColorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E851002B3C24B5003884A6 /* EmojisAndColorsCell.swift */; };
+		72E851032B3C24FF003884A6 /* EmojisAndColorsSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E851022B3C24FF003884A6 /* EmojisAndColorsSupplementaryView.swift */; };
 		72FB73482B2CB91000092439 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FB73472B2CB91000092439 /* TrackerCollectionViewCell.swift */; };
 		72FB734A2B2CD58800092439 /* CreatingTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FB73492B2CD58800092439 /* CreatingTrackerViewController.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +52,8 @@
 		72DB87BD2B29F3F400190ACD /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		72DB87BF2B29F40300190ACD /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		72DB87C12B29F40E00190ACD /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
+		72E851002B3C24B5003884A6 /* EmojisAndColorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisAndColorsCell.swift; sourceTree = "<group>"; };
+		72E851022B3C24FF003884A6 /* EmojisAndColorsSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisAndColorsSupplementaryView.swift; sourceTree = "<group>"; };
 		72FB73472B2CB91000092439 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		72FB73492B2CD58800092439 /* CreatingTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingTrackerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */,
+				72E851002B3C24B5003884A6 /* EmojisAndColorsCell.swift */,
+				72E851022B3C24FF003884A6 /* EmojisAndColorsSupplementaryView.swift */,
 				727A729F2B30AA88008FFC61 /* CustomTableViewCell.swift */,
 				722D10E62B2F471B00C33462 /* Schedule */,
 			);
@@ -258,8 +264,10 @@
 				72DB87C22B29F40E00190ACD /* TrackerRecord.swift in Sources */,
 				727A72A02B30AA88008FFC61 /* CustomTableViewCell.swift in Sources */,
 				72730B392B38B0AA0044F7F8 /* NewIrregularViewController.swift in Sources */,
+				72E851012B3C24B5003884A6 /* EmojisAndColorsCell.swift in Sources */,
 				720BBE412B16006900888F8A /* TrackersViewController.swift in Sources */,
 				72600C7D2B2DDBCC00F4019C /* EventButtonCell.swift in Sources */,
+				72E851032B3C24FF003884A6 /* EmojisAndColorsSupplementaryView.swift in Sources */,
 				72600C832B2E26D100F4019C /* Schedule.swift in Sources */,
 				72600C7F2B2DE85D00F4019C /* ScheduleViewController.swift in Sources */,
 				72600C782B2DB2CB00F4019C /* NewRegularViewController.swift in Sources */,
@@ -413,7 +421,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Dzhabaev.Tracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Chingiz.Tracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -443,7 +451,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Dzhabaev.Tracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Chingiz.Tracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
