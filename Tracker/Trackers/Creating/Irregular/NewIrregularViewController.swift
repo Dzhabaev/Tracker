@@ -39,7 +39,7 @@ final class NewIrregularViewController: BaseTrackerViewController {
         let weekdayArray = scheduleArray.map { $0.value }
         
         let newTracker = Tracker(
-            id: UUID(),
+            idTracker: UUID(),
             name: trackerName,
             color: selectedColor ?? .trBlack,
             emoji: selectedEmoji ?? "❓",

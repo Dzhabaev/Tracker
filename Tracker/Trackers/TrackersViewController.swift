@@ -17,6 +17,10 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Public Properties
     
+    private let trackerStore: TrackerStoreProtocol = TrackerStore()
+    private let trackerCategoryStore: TrackerCategoryStoreProtocol = TrackerCategoryStore()
+    private let trackerRecordStore: TrackerRecordStoreProtocol = TrackerRecordStore()
+    
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
     var visibleCategories: [TrackerCategory] = []
@@ -119,6 +123,8 @@ final class TrackersViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
+        
+        trackerStore.setDelegate(self)
     }
     
     // MARK: - Actions
@@ -323,9 +329,9 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         let isCompleted = completedTrackers.contains {
-            isMatchRecord(model: $0, with: tracker.id)
+            isMatchRecord(model: $0, with: tracker.idTracker)
         }
-        let completedDays = completedTrackers.filter { $0.trackerID == tracker.id }.count
+        let completedDays = completedTrackers.filter { $0.trackerID == tracker.idTracker }.count
         
         cell.delegate = self
         cell.setupUI(with: tracker, isCompletedToday: isCompleted, completedDays: completedDays, indexPath: indexPath)
@@ -400,5 +406,16 @@ extension TrackersViewController: UISearchTextFieldDelegate {
         textField.resignFirstResponder()
         hideNoResultsImage()
         return true
+    }
+}
+
+// MARK: - TrackerStoreDelegate
+
+extension TrackersViewController: TrackerStoreDelegate {
+    func trackerStoreDidUpdate(_ update: TrackerStoreUpdate) {
+        collectionView.performBatchUpdates {
+            collectionView.insertSections(update.insertedSections)
+            collectionView.insertItems(at: update.insertedIndexPaths)
+        }
     }
 }

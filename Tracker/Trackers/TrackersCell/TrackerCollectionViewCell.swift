@@ -98,7 +98,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         completedDays: Int,
         indexPath: IndexPath
     ) {
-        self.trackerID = tracker.id
+        self.trackerID = tracker.idTracker
         self.isCompleted = isCompletedToday
         self.indexPath = indexPath
         

@@ -146,7 +146,7 @@ class BaseTrackerViewController: UIViewController {
     @objc func pushCreateButton() {
         guard let trackerName = textField.text else { return }
         let newTracker = Tracker(
-            id: UUID(),
+            idTracker: UUID(),
             name: trackerName,
             color: selectedColor ?? .trBlack,
             emoji: selectedEmoji ?? "❓",
