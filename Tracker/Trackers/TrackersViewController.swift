@@ -125,6 +125,7 @@ final class TrackersViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
         
         trackerStore.setDelegate(self)
+        reloadData()
     }
     
     // MARK: - Actions
@@ -191,6 +192,15 @@ final class TrackersViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+
+    private func reloadData() {
+        do {
+            categories = try trackerCategoryStore.getCategories()
+        } catch {
+            assertionFailure("Failed to get categories with \(error)")
+        }
+        filterVisibleCategories(for: currentDate)
+    }
     
     private func setupNavigationBar() {
         let addTrackerButton = UIBarButtonItem(
@@ -393,9 +403,14 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 
 extension TrackersViewController: TrackersViewControllerDelegate {
     func createdTracker(tracker: Tracker, categoryTitle: String) {
-        categories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
-        filterVisibleCategories(for: currentDate)
-        collectionView.reloadData()
+        do {
+            try trackerStore.addTracker(tracker, toCategory: TrackerCategory(categoryTitle: categoryTitle, trackers: []))
+            categories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
+            filterVisibleCategories(for: currentDate)
+            collectionView.reloadData()
+        } catch {
+            print("Failed to add tracker to Core Data: \(error)")
+        }
     }
 }
 

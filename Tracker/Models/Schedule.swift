@@ -79,6 +79,4 @@ enum WeekDay: Int, CaseIterable {
         }
         return schedule
     }
-    
-    
 }
