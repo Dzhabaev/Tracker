@@ -368,7 +368,7 @@ extension BaseTrackerViewController: UICollectionViewDelegateFlowLayout {
         )
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectscrollViewItemAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             if let selectedEmojiIndex = selectedEmojiIndex {
                 let previousSelectedIndexPath = IndexPath(item: selectedEmojiIndex, section: 0)

@@ -123,7 +123,12 @@ extension NewRegularViewController {
 extension NewRegularViewController: ScheduleViewControllerDelegate {
     func updateScheduleInfo(_ selectedDays: [WeekDay]) {
         self.selectedSchedule = selectedDays
-        let subText = selectedSchedule.map { $0.shortValue }.joined(separator: ", ")
+        let subText: String
+        if selectedDays.count == WeekDay.allCases.count {
+            subText = "Каждый день"
+        } else {
+            subText = selectedDays.map { $0.shortValue }.joined(separator: ", ")
+        }
         setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
         isScheduleSelected = true
         checkButtonActivation()
