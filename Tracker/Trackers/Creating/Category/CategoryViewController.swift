@@ -76,6 +76,7 @@ final class CategoryViewController: UIViewController {
         
         view.backgroundColor = .trWhite
         navigationItem.hidesBackButton = true
+        navigationController?.navigationBar.barTintColor = .trWhite
         setupNavBar()
         setupView()
         setupConstraints()
@@ -173,6 +174,14 @@ extension CategoryViewController: UITableViewDelegate {
         let selectedCategory = dataForTableView[indexPath.row]
         delegate?.didSelectCategory(selectedCategory)
         navigationController?.popViewController(animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        }
     }
 }
 

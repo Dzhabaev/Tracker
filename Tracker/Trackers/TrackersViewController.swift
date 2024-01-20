@@ -408,6 +408,7 @@ extension TrackersViewController: TrackersViewControllerDelegate {
             categories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
             filterVisibleCategories(for: currentDate)
             collectionView.reloadData()
+            reloadData()
         } catch {
             print("Failed to add tracker to Core Data: \(error)")
         }
