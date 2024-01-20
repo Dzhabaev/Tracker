@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ScheduleViewControllerDelegate
 
 protocol ScheduleViewControllerDelegate: AnyObject {
-    func updateScheduleInfo(_ selectedDays: [WeekDay])
+    func updateScheduleInfo(_ selectedDays: [WeekDay],_ switchStates: [Int: Bool])
 }
 
 // MARK: - ScheduleViewController
@@ -18,6 +18,7 @@ protocol ScheduleViewControllerDelegate: AnyObject {
 final class ScheduleViewController: UIViewController {
     
     weak var delegate: ScheduleViewControllerDelegate?
+    var switchStates: [Int : Bool] = [:]
     
     // MARK: - Private Properties
     
@@ -64,7 +65,7 @@ final class ScheduleViewController: UIViewController {
     
     @objc private func pushDoneButton() {
         switchStatus()
-        delegate?.updateScheduleInfo(selectedSchedule)
+        delegate?.updateScheduleInfo(selectedSchedule, switchStates)
         navigationController?.popViewController(animated: true)
     }
     
@@ -108,7 +109,7 @@ final class ScheduleViewController: UIViewController {
             let indexPath = IndexPath(row: index, section: 0)
             let cell = tableView.cellForRow(at: indexPath)
             guard let switchView = cell?.accessoryView as? UISwitch else {return}
-            
+            switchStates[index] = switchView.isOn
             if switchView.isOn {
                 selectedSchedule.append(weekDay)
             } else {
@@ -130,7 +131,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         cell.backgroundColor = .trBackgroundDay
         cell.textLabel?.text = WeekDay.allCases[indexPath.row].value
         let switchButton = UISwitch(frame: .zero)
-        switchButton.setOn(false, animated: true)
+        switchButton.setOn(switchStates[indexPath.row] ?? false, animated: true)
         switchButton.onTintColor = .trBlue
         switchButton.tag = indexPath.row
         cell.accessoryView = switchButton

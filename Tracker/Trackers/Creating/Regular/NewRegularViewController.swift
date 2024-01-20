@@ -9,80 +9,9 @@ import UIKit
 
 // MARK: - UIViewController
 
-final class NewRegularViewController: UIViewController {
+final class NewRegularViewController: BaseTrackerViewController {
     
-    // MARK: - Public Properties
-    
-    weak var delegate: CreatingTrackerViewControllerDelegate?
-    
-    // MARK: - Private Properties
-    
-    private let dataForTableView = ["Категория", "Расписание"]
-    private var selectedSchedule: [WeekDay] = []
-    private var selectedCategory = String()
-    
-    private let textField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .trBackgroundDay
-        textField.layer.cornerRadius = 16
-        textField.layer.masksToBounds = true
-        textField.font = UIFont.systemFont(ofSize: 17)
-        textField.addLeftPadding(16)
-        textField.placeholder = "Введите название трекера"
-        textField.clearButtonMode = .whileEditing
-        textField.returnKeyType = .done
-        textField.enablesReturnKeyAutomatically = true
-        textField.smartInsertDeleteType = .no
-        return textField
-    }()
-    
-    private let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .trBackgroundDay
-        tableView.layer.cornerRadius = 16
-        tableView.layer.masksToBounds = true
-        tableView.register(EventButtonCell.self, forCellReuseIdentifier: EventButtonCell.reuseIdentifier)
-        return tableView
-    }()
-    
-    private let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.spacing = 8
-        stack.distribution = .fillEqually
-        return stack
-    }()
-    
-    private let cancelButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .trWhite
-        button.setTitleColor(.trRed, for: .normal)
-        button.setTitle("Отменить", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.layer.cornerRadius = 16
-        button.layer.masksToBounds = true
-        button.layer.borderColor = UIColor.trRed.cgColor
-        button.layer.borderWidth = 1
-        button.addTarget(self, action: #selector(pushCancelButton), for: .touchUpInside)
-        return button
-    }()
-    
-    private let createButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .trBlack
-        button.layer.cornerRadius = 16
-        button.layer.masksToBounds = true
-        button.setTitle("Создать", for: .normal)
-        button.setTitleColor(.trWhite, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.addTarget(self, action: #selector(pushCreateButton), for: .touchUpInside)
-        return button
-    }()
+    private var selectedWeekdays: [Int: Bool] = [:]
     
     // MARK: - UIViewController Lifecycle
     
@@ -90,28 +19,27 @@ final class NewRegularViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .trWhite
-        setupNavBar()
-        setupView()
-        setupConstraints()
-        
+        setupNavBar(title: "Новая привычка")
+        configureUIElements()
+        tableView.delegate = self
+        tableView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         createButton.isEnabled = false
         createButton.backgroundColor = .trGray
     }
     
     // MARK: - Actions
     
-    @objc private func pushCancelButton() {
-        dismiss(animated: true)
-        delegate?.cancelCreateTracker()
+    @objc override func pushCancelButton() {
+        super.pushCancelButton()
     }
     
-    @objc private func pushCreateButton() {
+    @objc override func pushCreateButton() {
         guard let trackerName = textField.text else { return }
         let newTracker = Tracker(
-            id: UUID(),
+            idTracker: UUID(),
             name: trackerName,
-            color: .colorSelection8,
-            emoji: "🙏",
+            color: selectedColor ?? .trBlack,
+            emoji: selectedEmoji ?? "❓",
             schedule: selectedSchedule)
         delegate?.createTracker(tracker: newTracker, categoryTitle: selectedCategory)
         dismiss(animated: true)
@@ -119,57 +47,12 @@ final class NewRegularViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func setupNavBar(){
-        navigationItem.title = "Новая привычка"
-    }
-    
-    private func setupView() {
-        [textField,
-         tableView,
-         stackView
-        ].forEach { view.addSubview($0) }
-        
-        textField.delegate = self
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        [cancelButton,
-         createButton
-        ].forEach { stackView.addArrangedSubview($0) }
-    }
-    
-    private func setupConstraints() {
-        
-        NSLayoutConstraint.activate([
-            textField.heightAnchor.constraint(equalToConstant: 75),
-            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            
-            tableView.heightAnchor.constraint(equalToConstant: 150),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
-            
-            stackView.heightAnchor.constraint(equalToConstant: 60),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-        ])
-    }
-    
-    private func setSubTitle(_ subTitle: String?, forCellAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? EventButtonCell else {
-            return
-        }
-        cell.set(subText: subTitle)
-    }
-    
     private func createSchedule(schedule: [WeekDay]) {
         self.selectedSchedule = schedule
         let subText = selectedSchedule.map { $0.shortValue }.joined(separator: ", ")
         setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
         tableView.reloadData()
+        checkButtonActivation()
     }
     
     private func didSelectDays(_ days: [WeekDay]) {
@@ -179,13 +62,18 @@ final class NewRegularViewController: UIViewController {
         }
     }
     
-    private func updateCategory(_ category: String) {
-        selectedCategory = category
-        setCategoryTitle(selectedCategory)
-    }
-    
-    private func setCategoryTitle(_ category: String) {
-        setSubTitle(category, forCellAt: IndexPath(row: 0, section: 0))
+    override func checkButtonActivation() {
+        let isEmojiSelected = selectedEmoji != nil
+        let isColorSelected = selectedColor != nil
+        let isCategoryTextEmpty = textField.text?.isEmpty ?? true
+        
+        if isCategorySelected && isScheduleSelected  && !isCategoryTextEmpty && isEmojiSelected && isColorSelected {
+            createButton.isEnabled = true
+            createButton.backgroundColor = .trBlack
+        } else {
+            createButton.isEnabled = false
+            createButton.backgroundColor = .trGray
+        }
     }
 }
 
@@ -201,6 +89,7 @@ extension NewRegularViewController: UITableViewDelegate {
         } else if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
             scheduleViewController.delegate = self
+            scheduleViewController.switchStates = selectedWeekdays
             navigationController?.pushViewController(scheduleViewController, animated: true)
         }
     }
@@ -208,14 +97,13 @@ extension NewRegularViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension NewRegularViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataForTableView.count
+extension NewRegularViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EventButtonCell.reuseIdentifier, for: indexPath) as! EventButtonCell
-        
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .trBackgroundDay
         if indexPath.row == 0 {
@@ -236,37 +124,18 @@ extension NewRegularViewController: UITableViewDataSource {
 // MARK: - ScheduleViewControllerDelegate
 
 extension NewRegularViewController: ScheduleViewControllerDelegate {
-    func updateScheduleInfo(_ selectedDays: [WeekDay]) {
+    func updateScheduleInfo(_ selectedDays: [WeekDay], _ switchStates: [Int: Bool]) {
         self.selectedSchedule = selectedDays
-        let subText = selectedSchedule.map { $0.shortValue }.joined(separator: ", ")
-        setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
-        tableView.reloadData()
-    }
-}
-
-// MARK: - CategoryViewControllerDelegate
-
-extension NewRegularViewController: CategoryViewControllerDelegate {
-    func didSelectCategory(_ category: String) {
-        updateCategory(category)
-    }
-}
-
-// MARK: - UITextFieldDelegate
-
-extension NewRegularViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text, !text.isEmpty {
-            createButton.isEnabled = true
-            createButton.backgroundColor = .trBlack
+        let subText: String
+        if selectedDays.count == WeekDay.allCases.count {
+            subText = "Каждый день"
         } else {
-            createButton.isEnabled = false
-            createButton.backgroundColor = .trGray
+            subText = selectedDays.map { $0.shortValue }.joined(separator: ", ")
         }
-        return true
-    }
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+        setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
+        isScheduleSelected = true
+        checkButtonActivation()
+        selectedWeekdays = switchStates
+        tableView.reloadData()
     }
 }

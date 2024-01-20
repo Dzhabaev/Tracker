@@ -10,7 +10,7 @@ import UIKit
 // MARK: - NewCategoryViewControllerDelegate
 
 protocol NewCategoryViewControllerDelegate: AnyObject {
-    func didCreateCategory(_ category: String)
+    func didCreateCategory(_ category: TrackerCategory)
 }
 
 
@@ -67,8 +67,10 @@ final class NewCategoryViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func pushDoneButton() {
-        guard let text = textField.text, !text.isEmpty else { return }
-        delegate?.didCreateCategory(text)
+        if let text = textField.text, !text.isEmpty {
+            let category = TrackerCategory(categoryTitle: text, trackers: [])
+            delegate?.didCreateCategory(category)
+        }
         dismiss(animated: true)
     }
     

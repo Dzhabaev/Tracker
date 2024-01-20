@@ -21,7 +21,9 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Private Properties
     
+    private let trackerCategoryStore: TrackerCategoryStoreProtocol = TrackerCategoryStore()
     private var dataForTableView: [String] = []
+    private var listOfCategories: [TrackerCategory] = []
     private var selectedCategoryIndex: Int?
     
     private let tableView: UITableView = {
@@ -74,9 +76,11 @@ final class CategoryViewController: UIViewController {
         
         view.backgroundColor = .trWhite
         navigationItem.hidesBackButton = true
+        navigationController?.navigationBar.barTintColor = .trWhite
         setupNavBar()
         setupView()
         setupConstraints()
+        getCategories()
     }
     
     // MARK: - Actions
@@ -146,6 +150,16 @@ final class CategoryViewController: UIViewController {
             hideEmptyStateImage()
         }
     }
+    
+    private func getCategories() {
+        do {
+            listOfCategories = try trackerCategoryStore.getCategories()
+            dataForTableView = listOfCategories.map { $0.categoryTitle }
+            updateEmptyStateVisibility()
+        } catch {
+            assertionFailure("Failed to get categories with \(error)")
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -160,6 +174,14 @@ extension CategoryViewController: UITableViewDelegate {
         let selectedCategory = dataForTableView[indexPath.row]
         delegate?.didSelectCategory(selectedCategory)
         navigationController?.popViewController(animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        }
     }
 }
 
@@ -216,19 +238,27 @@ extension CategoryViewController: UITableViewDataSource {
 // MARK: - NewCategoryViewControllerDelegate
 
 extension CategoryViewController: NewCategoryViewControllerDelegate {
-    func didCreateCategory(_ category: String) {
-        if !dataForTableView.contains(category) {
-            dataForTableView.append(category)
-            tableView.invalidateIntrinsicContentSize()
-            tableView.layoutIfNeeded()
+    func didCreateCategory(_ category: TrackerCategory) {
+        do {
+            try trackerCategoryStore.addCategory(category)
+            getCategories()
             tableView.reloadData()
             updateEmptyStateVisibility()
+        } catch {
+            assertionFailure("Failed to add category with \(error)")
         }
     }
-    
-    func updatedCategoryList(_ categories: [String]) {
-        dataForTableView = categories
-        tableView.reloadData()
+}
+
+// MARK: - TrackerCategoryStoreDelegate
+
+extension CategoryViewController: TrackerCategoryStoreDelegate {
+    func didUpdate(_ update: TrackerCategoryStoreUpdate) {
+        getCategories()
+        tableView.performBatchUpdates {
+            tableView.insertRows(at: update.insertedIndexPaths, with: .automatic)
+            tableView.deleteRows(at: update.deletedIndexPaths, with: .automatic)
+        }
         updateEmptyStateVisibility()
     }
 }
