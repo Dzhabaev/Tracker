@@ -11,6 +11,8 @@ import UIKit
 
 final class NewRegularViewController: BaseTrackerViewController {
     
+    private var selectedWeekdays: [Int: Bool] = [:]
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -87,6 +89,7 @@ extension NewRegularViewController: UITableViewDelegate {
         } else if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
             scheduleViewController.delegate = self
+            scheduleViewController.switchStates = selectedWeekdays
             navigationController?.pushViewController(scheduleViewController, animated: true)
         }
     }
@@ -121,7 +124,7 @@ extension NewRegularViewController {
 // MARK: - ScheduleViewControllerDelegate
 
 extension NewRegularViewController: ScheduleViewControllerDelegate {
-    func updateScheduleInfo(_ selectedDays: [WeekDay]) {
+    func updateScheduleInfo(_ selectedDays: [WeekDay], _ switchStates: [Int: Bool]) {
         self.selectedSchedule = selectedDays
         let subText: String
         if selectedDays.count == WeekDay.allCases.count {
@@ -132,6 +135,7 @@ extension NewRegularViewController: ScheduleViewControllerDelegate {
         setSubTitle(subText, forCellAt: IndexPath(row: 1, section: 0))
         isScheduleSelected = true
         checkButtonActivation()
+        selectedWeekdays = switchStates
         tableView.reloadData()
     }
 }
