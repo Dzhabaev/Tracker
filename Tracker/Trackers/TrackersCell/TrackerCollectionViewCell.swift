@@ -10,8 +10,9 @@ import UIKit
 // MARK: - TrackerCollectionViewCellDelegate
 
 protocol TrackerCollectionViewCellDelegate: AnyObject {
-    func competeTracker(id: UUID)
-    func uncompleteTracker(id: UUID)
+    func getSelectedDate() -> Date
+    func completeTracker(id: UUID, at indexPath: IndexPath)
+    func uncompleteTracker(id: UUID, at indexPath: IndexPath)
 }
 
 // MARK: - TrackerCollectionViewCell
@@ -24,9 +25,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     weak var delegate: TrackerCollectionViewCellDelegate?
     
-    var isCompleted: Bool?
-    var trackerID: UUID?
-    var indexPath: IndexPath?
+    private var isCompleted: Bool?
+    private var trackerID: UUID?
+    private var indexPath: IndexPath?
     
     // MARK: - Private Properties
     
@@ -122,20 +123,22 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             imageView.centerXAnchor.constraint(equalTo: counterButton.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: counterButton.centerYAnchor)
         ])
+        checkDate()
     }
     
     // MARK: - Actions
     
     @objc func completionButtonTapped() {
         guard let isCompleted = isCompleted,
-              let trackerID = trackerID
+              let trackerID = trackerID,
+              let indexPath = indexPath
         else {
             return
         }
         if isCompleted {
-            delegate?.uncompleteTracker(id: trackerID)
+            delegate?.uncompleteTracker(id: trackerID, at: indexPath)
         } else {
-            delegate?.competeTracker(id: trackerID)
+            delegate?.completeTracker(id: trackerID, at: indexPath)
         }
     }
     
@@ -193,5 +196,15 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
                 completedDaysLabel.text = "\(completedDays) дней"
             }
         }
+    }
+    
+    private func checkDate() {
+        let selectedDate = delegate?.getSelectedDate() ?? Date()
+        let opacity: Float = selectedDate <= Date() ? 1.0 : 0.3
+        
+        containerView.layer.opacity = opacity
+        counterButton.layer.opacity = opacity
+        
+        counterButton.isEnabled = selectedDate <= Date()
     }
 }

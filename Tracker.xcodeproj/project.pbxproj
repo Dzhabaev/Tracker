@@ -19,6 +19,7 @@
 		7224C95F2B5A957500D365AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7224C95E2B5A957500D365AE /* LaunchScreen.storyboard */; };
 		722D10E92B2F47FD00C33462 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722D10E82B2F47FD00C33462 /* CategoryViewController.swift */; };
 		722D10EB2B2F508000C33462 /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722D10EA2B2F508000C33462 /* NewCategoryViewController.swift */; };
+		7247C8EE2B6AA259005F8EF0 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7247C8ED2B6AA259005F8EF0 /* OnboardingViewController.swift */; };
 		72600C782B2DB2CB00F4019C /* NewRegularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */; };
 		72600C7A2B2DBE3800F4019C /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C792B2DBE3800F4019C /* UITextField+Extension.swift */; };
 		72600C7D2B2DDBCC00F4019C /* EventButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C7C2B2DDBCC00F4019C /* EventButtonCell.swift */; };
@@ -53,6 +54,7 @@
 		7224C95E2B5A957500D365AE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		722D10E82B2F47FD00C33462 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		722D10EA2B2F508000C33462 /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
+		7247C8ED2B6AA259005F8EF0 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRegularViewController.swift; sourceTree = "<group>"; };
 		72600C792B2DBE3800F4019C /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		72600C7C2B2DDBCC00F4019C /* EventButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventButtonCell.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				720BBE452B16006B00888F8A /* Assets.xcassets */,
 				7224C95E2B5A957500D365AE /* LaunchScreen.storyboard */,
 				720BBE3C2B16006900888F8A /* AppDelegate.swift */,
+				7247C8ED2B6AA259005F8EF0 /* OnboardingViewController.swift */,
 				720BBE522B174C5D00888F8A /* TabBarController.swift */,
 				727A72A22B30AF6B008FFC61 /* Trackers */,
 				727A72A32B30AF99008FFC61 /* Statistic */,
@@ -305,6 +308,7 @@
 				72730B392B38B0AA0044F7F8 /* NewIrregularViewController.swift in Sources */,
 				72E851012B3C24B5003884A6 /* EmojisAndColorsCell.swift in Sources */,
 				720BBE412B16006900888F8A /* TrackersViewController.swift in Sources */,
+				7247C8EE2B6AA259005F8EF0 /* OnboardingViewController.swift in Sources */,
 				72600C7D2B2DDBCC00F4019C /* EventButtonCell.swift in Sources */,
 				72E851032B3C24FF003884A6 /* EmojisAndColorsSupplementaryView.swift in Sources */,
 				72600C832B2E26D100F4019C /* Schedule.swift in Sources */,
@@ -470,6 +474,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -500,6 +505,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
