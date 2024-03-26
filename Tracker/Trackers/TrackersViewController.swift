@@ -194,12 +194,10 @@ final class TrackersViewController: UIViewController {
     // MARK: - Private Methods
     
     private func reloadData() {
-        do {
-            categories = try trackerCategoryStore.getCategories()
-        } catch {
-            assertionFailure("Failed to get categories with \(error)")
+        trackerCategoryStore.getCategories { [weak self] categories in
+            self?.categories = categories
+            self?.filterVisibleCategories(for: self?.currentDate ?? Date())
         }
-        filterVisibleCategories(for: currentDate)
     }
     
     private func setupNavigationBar() {
