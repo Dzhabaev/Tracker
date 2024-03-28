@@ -7,9 +7,7 @@
 
 import Foundation
 
-// Структура для хранения записей о выполнении трекера на определенную дату
-
 struct TrackerRecord {
-    let trackerID: UUID // Идентификатор выполненного трекера
-    let date: Date // Дата выполнения
+    let trackerID: UUID
+    let date: Date
 }
