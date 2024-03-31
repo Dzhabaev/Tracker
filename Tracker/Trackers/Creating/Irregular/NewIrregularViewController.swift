@@ -15,7 +15,7 @@ final class NewIrregularViewController: BaseTrackerViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .trWhite
-        setupNavBar(title: "Новое нерегулярное событие")
+        setupNavBar(title: NSLocalizedString("setupNavBarNewIrregular.title", comment: ""))
         configureUIElements()
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -72,7 +72,7 @@ extension NewIrregularViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EventButtonCell.reuseIdentifier, for: indexPath) as! EventButtonCell
         cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = .trBackgroundDay
+        cell.backgroundColor = .trBackground
         if indexPath.row == 0 {
             cell.titleLabel.text = dataForTableView[0]
         }

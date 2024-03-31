@@ -15,7 +15,10 @@ class BaseTrackerViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    let dataForTableView = ["Категория", "Расписание"]
+    let dataForTableView = [
+        NSLocalizedString("category", comment: ""),
+        NSLocalizedString("schedule", comment: "")
+    ]
     var selectedSchedule: [WeekDay] = []
     var selectedCategory = String()
     var selectedEmoji: String?
@@ -53,12 +56,12 @@ class BaseTrackerViewController: UIViewController {
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .trBackgroundDay
+        textField.backgroundColor = .trBackground
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
         textField.font = UIFont.systemFont(ofSize: 17)
         textField.addLeftPadding(16)
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = NSLocalizedString("textFieldBase.placeholder", comment: "")
         textField.clearButtonMode = .whileEditing
         textField.returnKeyType = .done
         textField.enablesReturnKeyAutomatically = true
@@ -69,7 +72,7 @@ class BaseTrackerViewController: UIViewController {
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .trBackgroundDay
+        tableView.backgroundColor = .trBackground
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.register(
@@ -93,7 +96,7 @@ class BaseTrackerViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .trWhite
         button.setTitleColor(.trRed, for: .normal)
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(NSLocalizedString("cancelButton.setTitle", comment: ""), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
@@ -109,7 +112,7 @@ class BaseTrackerViewController: UIViewController {
         button.backgroundColor = .trBlack
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(NSLocalizedString("createButton.setTitle", comment: ""), for: .normal)
         button.setTitleColor(.trWhite, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(pushCreateButton), for: .touchUpInside)
@@ -328,9 +331,9 @@ extension BaseTrackerViewController: UICollectionViewDataSource {
             for: indexPath
         ) as! EmojisAndColorsSupplementaryView
         if indexPath.section == 0 {
-            view.titleLabel.text = "Emoji"
+            view.titleLabel.text = NSLocalizedString("emojiTitleLabel.text", comment: "")
         } else if indexPath.section == 1 {
-            view.titleLabel.text = "Цвет"
+            view.titleLabel.text = NSLocalizedString("colorTitleLabel.text", comment: "")
         }
         return view
     }

@@ -31,7 +31,6 @@ final class TrackersViewController: UIViewController {
     private let trackersLabel: UILabel = {
         let trackerLabel = UILabel()
         trackerLabel.translatesAutoresizingMaskIntoConstraints = false
-        trackerLabel.text = "Трекеры"
         trackerLabel.font = .boldSystemFont(ofSize: 34)
         trackerLabel.textColor = .trBlack
         return trackerLabel
@@ -40,7 +39,6 @@ final class TrackersViewController: UIViewController {
     private let searchTextField: UISearchTextField = {
         let searchField = UISearchTextField()
         searchField.translatesAutoresizingMaskIntoConstraints = false
-        searchField.placeholder = "Поиск"
         searchField.font = UIFont.systemFont(ofSize: 17)
         searchField.addTarget(self, action: #selector(searchTrackers), for: .allEvents)
         return searchField
@@ -63,7 +61,7 @@ final class TrackersViewController: UIViewController {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.locale = .current
         datePicker.widthAnchor.constraint(equalToConstant: 120).isActive = true
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         return datePicker
@@ -79,7 +77,6 @@ final class TrackersViewController: UIViewController {
     private let emptyStateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Что будем отслеживать?"
         label.font = .systemFont(ofSize: 12)
         label.textColor = .trBlack
         return label
@@ -95,7 +92,6 @@ final class TrackersViewController: UIViewController {
     private let noResultsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Ничего не найдено"
         label.font = .systemFont(ofSize: 12)
         label.textColor = .trBlack
         return label
@@ -223,6 +219,15 @@ final class TrackersViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        let trackersLabelText = NSLocalizedString("trackersLabel.text", comment: "")
+        trackersLabel.text = trackersLabelText
+        let searchTextFieldText = NSLocalizedString("searchTextField.placeholder", comment: "")
+        searchTextField.placeholder = searchTextFieldText
+        let emptyStateText = NSLocalizedString("emptyState.text", comment: "")
+        emptyStateLabel.text = emptyStateText
+        let noResultsText = NSLocalizedString("noResults.text", comment: "")
+        noResultsLabel.text = noResultsText
     }
     
     private func setupConstraints() {

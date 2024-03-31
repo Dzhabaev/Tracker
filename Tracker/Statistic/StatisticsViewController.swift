@@ -13,7 +13,6 @@ final class StatisticsViewController: UIViewController {
     private let statisticsLabel: UILabel = {
         let trackerLabel = UILabel()
         trackerLabel.translatesAutoresizingMaskIntoConstraints = false
-        trackerLabel.text = "Статистика"
         trackerLabel.font = .boldSystemFont(ofSize: 34)
         trackerLabel.textColor = .trBlack
         return trackerLabel
@@ -29,7 +28,6 @@ final class StatisticsViewController: UIViewController {
     private let emptyStateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Анализировать пока нечего"
         label.font = .systemFont(ofSize: 12)
         label.textColor = .trBlack
         return label
@@ -47,6 +45,11 @@ final class StatisticsViewController: UIViewController {
          emptyStateImageView,
          emptyStateLabel
         ].forEach { view.addSubview($0) }
+        
+        let statisticsLabelText = NSLocalizedString("statisticsLabel.text", comment: "")
+        statisticsLabel.text = statisticsLabelText
+        let emptyStateStatisticsText = NSLocalizedString("emptyStateStatistics.text", comment: "")
+        emptyStateLabel.text = emptyStateStatisticsText
     }
     
     private func setupConstraints() {

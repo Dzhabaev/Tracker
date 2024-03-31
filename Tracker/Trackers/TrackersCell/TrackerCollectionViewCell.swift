@@ -183,19 +183,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     private func updateCounterLabelText(completedDays: Int){
-        let remainder = completedDays % 100
-        if (11...14).contains(remainder) {
-            completedDaysLabel.text = "\(completedDays) дней"
-        } else {
-            switch remainder % 10 {
-            case 1:
-                completedDaysLabel.text = "\(completedDays) день"
-            case 2...4:
-                completedDaysLabel.text = "\(completedDays) дня"
-            default:
-                completedDaysLabel.text = "\(completedDays) дней"
-            }
-        }
+        let formattedString = String.localizedStringWithFormat(
+            NSLocalizedString("StringKey", comment: ""),
+            completedDays
+        )
+        completedDaysLabel.text = formattedString
     }
     
     private func checkDate() {

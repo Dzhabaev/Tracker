@@ -14,8 +14,8 @@ final class OnboardingViewController: UIPageViewController {
     // MARK: - Private Properties
     
     private lazy var pages: [OnboardingPageViewController] = [
-        OnboardingPageViewController(imageName: "blueOnboarding", labelText: "Отслеживайте только то, что хотите"),
-        OnboardingPageViewController(imageName: "redOnboarding", labelText: "Даже если это\nне литры воды и йога")
+        OnboardingPageViewController(imageName: "blueOnboarding", labelText: NSLocalizedString("onboardingBlueLabelText.title", comment: "")),
+        OnboardingPageViewController(imageName: "redOnboarding", labelText: NSLocalizedString("onboardingRedLabelText.title", comment: ""))
     ]
     
     private lazy var pageControl: UIPageControl = {
@@ -35,7 +35,7 @@ final class OnboardingViewController: UIPageViewController {
         button.backgroundColor = .trBlackAny
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(NSLocalizedString("onboardingDoneButton.setTitle", comment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(pushButton), for: .touchUpInside)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OnboardingPageViewController: UIViewController {
+final class OnboardingPageViewController: UIViewController {
     
     // MARK: - Properties
     

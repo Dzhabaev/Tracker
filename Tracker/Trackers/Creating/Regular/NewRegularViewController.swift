@@ -19,7 +19,7 @@ final class NewRegularViewController: BaseTrackerViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .trWhite
-        setupNavBar(title: "Новая привычка")
+        setupNavBar(title: NSLocalizedString("setupNavBarNewRegular.title", comment: ""))
         configureUIElements()
         tableView.delegate = self
         tableView.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -105,7 +105,7 @@ extension NewRegularViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EventButtonCell.reuseIdentifier, for: indexPath) as! EventButtonCell
         cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = .trBackgroundDay
+        cell.backgroundColor = .trBackground
         if indexPath.row == 0 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             cell.titleLabel.text = dataForTableView[indexPath.row]
@@ -128,7 +128,7 @@ extension NewRegularViewController: ScheduleViewControllerDelegate {
         self.selectedSchedule = selectedDays
         let subText: String
         if selectedDays.count == WeekDay.allCases.count {
-            subText = "Каждый день"
+            subText = NSLocalizedString("selectedAllDay.subText", comment: "")
         } else {
             subText = selectedDays.map { $0.shortValue }.joined(separator: ", ")
         }

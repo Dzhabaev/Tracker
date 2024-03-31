@@ -24,42 +24,41 @@ enum WeekDay: Int, CaseIterable {
     var value: String {
         switch self {
         case .monday:
-            return "Понедельник"
+            return NSLocalizedString("Monday", comment: "")
         case .tuesday:
-            return "Вторник"
+            return NSLocalizedString("Tuesday", comment: "")
         case .wednesday:
-            return "Среда"
+            return NSLocalizedString("Wednesday", comment: "")
         case .thursday:
-            return "Четверг"
+            return NSLocalizedString("Thursday", comment: "")
         case .friday:
-            return "Пятница"
+            return NSLocalizedString("Friday", comment: "")
         case .saturday:
-            return "Суббота"
+            return NSLocalizedString("Saturday", comment: "")
         case .sunday:
-            return "Воскресение"
+            return NSLocalizedString("Sunday", comment: "")
         }
     }
     
     var shortValue: String {
         switch self {
         case .monday:
-            return "Пн"
+            return NSLocalizedString("Mon", comment: "")
         case .tuesday:
-            return "Вт"
+            return NSLocalizedString("Tue", comment: "")
         case .wednesday:
-            return "Ср"
+            return NSLocalizedString("Wed", comment: "")
         case .thursday:
-            return "Чт"
+            return NSLocalizedString("Thu", comment: "")
         case .friday:
-            return "Пт"
+            return NSLocalizedString("Fri", comment: "")
         case .saturday:
-            return "Сб"
+            return NSLocalizedString("Sat", comment: "")
         case .sunday:
-            return "Вс"
+            return NSLocalizedString("Sun", comment: "")
         }
     }
     
-    // Метод для преобразования массива WeekDay в Int16 для CoreData
     static func calculateScheduleValue(for schedule: [WeekDay]) -> Int16 {
         var scheduleValue: Int16 = 0
         for day in schedule {
@@ -69,7 +68,6 @@ enum WeekDay: Int, CaseIterable {
         return scheduleValue
     }
     
-    // Метод для преобразования Int16 из CoreData в массив WeekDay
     static func calculateScheduleArray(from value: Int16) -> [WeekDay] {
         var schedule: [WeekDay] = []
         for day in WeekDay.allCases {

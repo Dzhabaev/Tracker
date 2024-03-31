@@ -27,6 +27,7 @@ final class CategoryViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .trWhite
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.separatorStyle = .singleLine
@@ -42,7 +43,7 @@ final class CategoryViewController: UIViewController {
         button.backgroundColor = .trBlack
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(NSLocalizedString("addCategoryButton.setTitle", comment: ""), for: .normal)
         button.setTitleColor(.trWhite, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(pushAddCategoryButton), for: .touchUpInside)
@@ -60,7 +61,7 @@ final class CategoryViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 2
-        label.text = "Привычки и события можно\nобъединить по смыслу"
+        label.text = NSLocalizedString("emptyStateCategory.text", comment: "")
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 12)
         label.textColor = .trBlack
@@ -96,7 +97,7 @@ final class CategoryViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupNavBar() {
-        navigationItem.title = "Категория"
+        navigationItem.title = NSLocalizedString("categoryNavigationItem.title", comment: "")
     }
     
     private func setupView() {
@@ -171,8 +172,8 @@ extension CategoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        if indexPath.row == viewModel.numberOfCategories() - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UIScreen.main.bounds.width)
         } else {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
@@ -193,7 +194,7 @@ extension CategoryViewController: UITableViewDataSource {
         }
         let category = viewModel.category(at: indexPath.row)
         cell.textLabel?.text = category.categoryTitle
-        cell.backgroundColor = .trBackgroundDay
+        cell.backgroundColor = .trBackground
         cell.separatorInset = UIEdgeInsets(
             top: 0,
             left: 16,
@@ -204,7 +205,12 @@ extension CategoryViewController: UITableViewDataSource {
         cell.layer.cornerRadius = 16.0
         
         if viewModel.numberOfCategories() == 1 {
-            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            cell.layer.maskedCorners = [
+                .layerMinXMinYCorner,
+                .layerMaxXMinYCorner,
+                .layerMinXMaxYCorner,
+                .layerMaxXMaxYCorner
+            ]
         } else {
             let numberOfRows = tableView.numberOfRows(inSection: indexPath.section)
             if indexPath.row == 0 {
@@ -221,6 +227,8 @@ extension CategoryViewController: UITableViewDataSource {
         } else {
             cell.accessoryType = .none
         }
+        
+        updateEmptyStateVisibility()
         return cell
     }
     

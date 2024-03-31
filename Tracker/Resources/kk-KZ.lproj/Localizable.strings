@@ -1,0 +1,87 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Chingiz on 28.03.2024.
+  
+*/
+
+// MARK: - OnboardingViewController
+"onboardingBlueLabelText.title" = "Тек қалағаныңызды қадағалаңыз";
+"onboardingRedLabelText.title" = "Бұл литр су мен йога болмаса да";
+"onboardingDoneButton.setTitle" = "Бұл технология!";
+
+// MARK: - TabBarController
+"trackersVC.UITabBarItem.title" = "Трекерлер";
+"statisticsVC.UITabBarItem.title" = "Статистика";
+
+// MARK: - TrackersViewController
+"trackersLabel.text" = "Трекерлер";
+"searchTextField.placeholder" = "Іздеу";
+"emptyState.text" = "Біз нені қадағалаймыз?";
+"noResults.text" = "Ештеңе табылған жоқ"; 
+
+// MARK: - StatisticsViewController
+
+"statisticsLabel.text" = "Статистика";
+"emptyStateStatistics.text" = "Әзірге талдауға ештеңе жоқ";
+
+// MARK: - CreatingTrackerViewController
+
+"creatingNavigationItem.title" = "Трек құру";
+"regularButton.setTitle" = "Әдет";
+"irregularButton.setTitle" = "Тұрақты емес оқиға";
+
+// MARK: - BaseTrackerViewController
+
+"category" = "Санат";
+"schedule" = "Кесте";
+"textFieldBase.placeholder" = "Трекердің атын енгізіңіз";
+"cancelButton.setTitle" = "Бас тарту";
+"createButton.setTitle" = "Жасау";
+"emojiTitleLabel.text" = "Эмодзи";
+"colorTitleLabel.text" = "Түсі";
+
+// MARK: - NewRegularViewController
+
+"setupNavBarNewRegular.title" = "Жаңа әдет";
+"selectedAllDay.subText" = "Күн сайын";
+
+// MARK: - ScheduleViewController
+
+"scheduleNavigationItem.title" = "Кесте";
+"scheduleDoneButton.setTitle" = "Дайын";
+
+// MARK: - Schedule
+
+"Monday" = "Дүйсенбі";
+"Tuesday" = "Сейсенбі";
+"Wednesday" = "Сәрсенбі";
+"Thursday" = "Бейсенбі";
+"Friday" = "Жұма";
+"Saturday" = "Сенбі";
+"Sunday" = "Жексенбі";
+
+"Mon" = "Дүйсенбі";
+"Tue" = "Сейсенбі";
+"Wed" = "Сәрсенбі";
+"Thu" = "Бейсенбі";
+"Fri" = "Жұма";
+"Sat" = "Сенбі";
+"Sun" = "Жексенбі";
+
+// MARK: - NewIrregularViewController
+
+"setupNavBarNewIrregular.title" = "Жаңа тұрақты емес оқиға";
+
+// MARK: - CategoryViewController
+
+"addCategoryButton.setTitle" = "Санат қосу";
+"emptyStateCategory.text" = "Әдеттер мен оқиғаларды мағынасы\nбойынша біріктіруге болады";
+"categoryNavigationItem.title" = "Санат";
+
+// MARK: - NewCategoryViewController
+
+"textFieldNewCategory.placeholder" = "Санат атауын енгізіңіз";
+"newCategoryDoneButton.setTitle" = "Дайын";
+"newCategoryNavigationItem.title" = "Жаңа санат";
