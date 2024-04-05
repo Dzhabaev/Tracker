@@ -12,9 +12,11 @@ import UIKit
 
 private enum TrackerStoreError: Error {
     case decodingErrorInvalidID
+    case trackerNotFound
+    case contextSaveError
 }
 
-// MARK: - TrackerStoreUpdate structu
+// MARK: - TrackerStoreUpdate structure
 
 struct TrackerStoreUpdate {
     let insertedSections: IndexSet
@@ -31,6 +33,7 @@ protocol TrackerStoreProtocol {
     func setDelegate(_ delegate: TrackerStoreDelegate)
     func fetchTracker(_ trackerCoreData: TrackerCoreData) throws -> Tracker
     func addTracker(_ tracker: Tracker, toCategory category: TrackerCategory) throws
+    func deleteTracker(_ tracker: Tracker) throws
 }
 
 // MARK: - TrackerStore class
@@ -121,13 +124,24 @@ final class TrackerStore: NSObject {
         try saveContext()
     }
     
+    internal func deleteTracker(_ tracker: Tracker) throws {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", tracker.idTracker as CVarArg)
+        if let result = try context.fetch(fetchRequest).first {
+            context.delete(result)
+            try saveContext()
+        } else {
+            throw TrackerStoreError.trackerNotFound
+        }
+    }
+    
     private func saveContext() throws {
         guard context.hasChanges else { return }
         do {
             try context.save()
         } catch {
             context.rollback()
-            throw error
+            throw TrackerStoreError.contextSaveError
         }
     }
 }

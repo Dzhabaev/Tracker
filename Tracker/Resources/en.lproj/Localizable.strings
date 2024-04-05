@@ -7,19 +7,32 @@
 */
 
 // MARK: - OnboardingViewController
+
 "onboardingBlueLabelText.title" = "Track only what you want";
 "onboardingRedLabelText.title" = "Even if it's not liters of water and yoga";
 "onboardingDoneButton.setTitle" = "These are the technologies!";
 
 // MARK: - TabBarController
+
 "trackersVC.UITabBarItem.title" = "Trackers";
 "statisticsVC.UITabBarItem.title" = "Statistics";
 
 // MARK: - TrackersViewController
+
 "trackersLabel.text" = "Trackers";
 "searchTextField.placeholder" = "Search";
 "emptyState.text" = "What are we going to track?";
 "noResults.text" = "Nothing was found";
+"deleteTrackerAlert.title" = "Are you sure you want to delete the tracker?";
+"deleteTrackerAlertAction1.title" = "Delete";
+"deleteTrackerAlertAction2.title" = "Cancel";
+
+// MARK: - TrackerCollectionViewCell
+
+"pinAction.title" = "Pin";
+"unpinAction.title" = "Unpin";
+"editAction.title" = "Edit";
+"deleteAction.title" = "Delete";
 
 // MARK: - StatisticsViewController
 

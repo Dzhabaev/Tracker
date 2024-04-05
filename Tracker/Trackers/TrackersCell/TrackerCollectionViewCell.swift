@@ -13,6 +13,7 @@ protocol TrackerCollectionViewCellDelegate: AnyObject {
     func getSelectedDate() -> Date
     func completeTracker(id: UUID, at indexPath: IndexPath)
     func uncompleteTracker(id: UUID, at indexPath: IndexPath)
+    func deleteTracker(tracker: Tracker)
 }
 
 // MARK: - TrackerCollectionViewCell
@@ -28,6 +29,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var isCompleted: Bool?
     private var trackerID: UUID?
     private var indexPath: IndexPath?
+    private var isPinned: Bool = false
     
     // MARK: - Private Properties
     
@@ -153,6 +155,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         [emojiLabel,
          nameLabel
         ].forEach { containerView.addSubview($0) }
+        
+        let interaction = UIContextMenuInteraction(delegate: self)
+        containerView.addInteraction(interaction)
     }
     
     private func setupConstraints() {
@@ -198,5 +203,41 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         counterButton.layer.opacity = opacity
         
         counterButton.isEnabled = selectedDate <= Date()
+    }
+}
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        guard let indexPath = indexPath,
+              let trackerID = trackerID,
+              let isCompleted = isCompleted
+        else {
+            return nil
+        }
+        
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil,
+            actionProvider: { _ in
+                
+                let pinAction = UIAction(title: self.isPinned ? NSLocalizedString("unpinAction.title", comment: "") : NSLocalizedString("pinAction.title", comment: "")) { [weak self] _ in
+                    // TODO: - Обработка нажатия на "Закрепить"
+                }
+                
+                let editAction = UIAction(title: NSLocalizedString("editAction.title", comment: "")) { [weak self] _ in
+                    // TODO: - Обработка нажатия на "Редактировать"
+                }
+                
+                let deleteAction = UIAction(title: NSLocalizedString("deleteAction.title", comment: ""), attributes: .destructive) { [weak self] _ in
+                    guard let trackerID = self?.trackerID,
+                          let indexPath = self?.indexPath else {
+                        return
+                    }
+                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [])
+                    self?.delegate?.deleteTracker(tracker: tracker)
+                }
+                return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
+            }
+        )
     }
 }

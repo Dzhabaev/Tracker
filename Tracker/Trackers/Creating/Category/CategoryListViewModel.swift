@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CategoryListViewModel {
+final class CategoryListViewModel {
     typealias Binding<T> = (T) -> Void
     
     private let categoryStore: TrackerCategoryStoreProtocol

@@ -429,6 +429,30 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         }
     }
     
+    func deleteTracker(tracker: Tracker) {
+        let actionSheet: UIAlertController = {
+            let alert = UIAlertController()
+            alert.title = NSLocalizedString("deleteTrackerAlert.title", comment: "")
+            return alert
+        }()
+        
+        let action1 = UIAlertAction(title: NSLocalizedString("deleteTrackerAlertAction1.title", comment: ""), style: .destructive) { [weak self] _ in
+            do {
+                try self?.trackerStore.deleteTracker(tracker)
+                self?.reloadData()
+                self?.collectionView.reloadData()
+            } catch {
+                print("Failed to delete tracker: \(error)")
+            }
+        }
+        let action2 = UIAlertAction(title: NSLocalizedString("deleteTrackerAlertAction2.title", comment: ""), style: .cancel)
+        
+        actionSheet.addAction(action1)
+        actionSheet.addAction(action2)
+        
+        present(actionSheet, animated: true)
+    }
+    
 }
 
 // MARK: - TrackersViewControllerDelegate

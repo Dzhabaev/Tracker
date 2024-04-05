@@ -7,19 +7,32 @@
 */
 
 // MARK: - OnboardingViewController
+
 "onboardingBlueLabelText.title" = "Тек қалағаныңызды қадағалаңыз";
 "onboardingRedLabelText.title" = "Бұл литр су мен йога болмаса да";
 "onboardingDoneButton.setTitle" = "Бұл технология!";
 
 // MARK: - TabBarController
+
 "trackersVC.UITabBarItem.title" = "Трекерлер";
 "statisticsVC.UITabBarItem.title" = "Статистика";
 
 // MARK: - TrackersViewController
+
 "trackersLabel.text" = "Трекерлер";
 "searchTextField.placeholder" = "Іздеу";
 "emptyState.text" = "Біз нені қадағалаймыз?";
-"noResults.text" = "Ештеңе табылған жоқ"; 
+"noResults.text" = "Ештеңе табылған жоқ";
+"deleteTrackerAlert.title" = "Трекерді жойғыңыз келетініне сенімдісіз бе?";
+"deleteTrackerAlertAction1.title" = "Жою";
+"deleteTrackerAlertAction2.title" = "Бас тарту";
+
+// MARK: - TrackerCollectionViewCell
+
+"pinAction.title" = "Бекіту";
+"unpinAction.title" = "Босату";
+"editAction.title" = "Өңдеу";
+"deleteAction.title" = "Жою";
 
 // MARK: - StatisticsViewController
 
