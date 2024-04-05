@@ -14,6 +14,7 @@ protocol TrackerCollectionViewCellDelegate: AnyObject {
     func completeTracker(id: UUID, at indexPath: IndexPath)
     func uncompleteTracker(id: UUID, at indexPath: IndexPath)
     func deleteTracker(tracker: Tracker)
+    func pinTracker(tracker: Tracker)
 }
 
 // MARK: - TrackerCollectionViewCell
@@ -80,6 +81,20 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    private let pinImage: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = UIImage(systemName: "pin.fill")
+        image.image = image.image?.withAlignmentRectInsets(UIEdgeInsets(
+            top: -6,
+            left: -6,
+            bottom: -6,
+            right: -6)
+        )
+        image.tintColor = .white
+        return image
+    }()
+    
     // MARK: - Initializers
     
     override init(frame: CGRect) {
@@ -102,6 +117,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         indexPath: IndexPath
     ) {
         self.trackerID = tracker.idTracker
+        self.isPinned = tracker.isPinned
         self.isCompleted = isCompletedToday
         self.indexPath = indexPath
         
@@ -126,6 +142,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             imageView.centerYAnchor.constraint(equalTo: counterButton.centerYAnchor)
         ])
         checkDate()
+        showPin()
     }
     
     // MARK: - Actions
@@ -153,7 +170,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         ].forEach { contentView.addSubview($0) }
         
         [emojiLabel,
-         nameLabel
+         nameLabel,
+         pinImage
         ].forEach { containerView.addSubview($0) }
         
         let interaction = UIContextMenuInteraction(delegate: self)
@@ -183,8 +201,21 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             counterButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             counterButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
             counterButton.heightAnchor.constraint(equalToConstant: 34),
-            counterButton.widthAnchor.constraint(equalToConstant: 34)
+            counterButton.widthAnchor.constraint(equalToConstant: 34),
+            
+            pinImage.widthAnchor.constraint(equalToConstant: 24),
+            pinImage.heightAnchor.constraint(equalToConstant: 24),
+            pinImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
+            pinImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -4)
         ])
+    }
+    
+    private func showPin() {
+        if self.isPinned {
+            pinImage.isHidden = false
+        } else {
+            pinImage.isHidden = true
+        }
     }
     
     private func updateCounterLabelText(completedDays: Int){
@@ -221,7 +252,12 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
             actionProvider: { _ in
                 
                 let pinAction = UIAction(title: self.isPinned ? NSLocalizedString("unpinAction.title", comment: "") : NSLocalizedString("pinAction.title", comment: "")) { [weak self] _ in
-                    // TODO: - Обработка нажатия на "Закрепить"
+                    guard let trackerID = self?.trackerID,
+                          let indexPath = self?.indexPath else {
+                        return
+                    }
+                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [], isPinned: false)
+                    self?.delegate?.pinTracker(tracker: tracker)
                 }
                 
                 let editAction = UIAction(title: NSLocalizedString("editAction.title", comment: "")) { [weak self] _ in
@@ -233,7 +269,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                           let indexPath = self?.indexPath else {
                         return
                     }
-                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [])
+                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [], isPinned: false)
                     self?.delegate?.deleteTracker(tracker: tracker)
                 }
                 return UIMenu(title: "", children: [pinAction, editAction, deleteAction])

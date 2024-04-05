@@ -26,6 +26,7 @@
 "deleteTrackerAlert.title" = "Трекерді жойғыңыз келетініне сенімдісіз бе?";
 "deleteTrackerAlertAction1.title" = "Жою";
 "deleteTrackerAlertAction2.title" = "Бас тарту";
+"pinnedCategoryTitle" = "Бекітілген";
 
 // MARK: - TrackerCollectionViewCell
 

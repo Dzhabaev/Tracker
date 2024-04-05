@@ -26,6 +26,7 @@
 "deleteTrackerAlert.title" = "Are you sure you want to delete the tracker?";
 "deleteTrackerAlertAction1.title" = "Delete";
 "deleteTrackerAlertAction2.title" = "Cancel";
+"pinnedCategoryTitle" = "Fixed";
 
 // MARK: - TrackerCollectionViewCell
 

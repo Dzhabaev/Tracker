@@ -122,6 +122,9 @@ final class TrackersViewController: UIViewController {
         
         trackerStore.setDelegate(self)
         reloadData()
+        
+        visibleCategories = filterTrackersBySelectedDate()
+        collectionView.reloadData()
     }
     
     // MARK: - Actions
@@ -143,6 +146,8 @@ final class TrackersViewController: UIViewController {
                 }
             }
         }
+        visibleCategories = filterTrackersBySelectedDate()
+        collectionView.reloadData()
     }
     
     @objc private func searchTrackers() {
@@ -332,6 +337,36 @@ final class TrackersViewController: UIViewController {
             return []
         }
     }
+    
+    private func filterTrackersBySelectedDate() -> [TrackerCategory] {
+        var categoriesFromCoreData: [TrackerCategory] = []
+        trackerCategoryStore.getCategories { categories in
+            categoriesFromCoreData = categories
+        }
+        let selectedWeekday = Calendar.current.component(.weekday, from: currentDate)
+        var filteredCategories: [TrackerCategory] = []
+        var pinnedTrackers: [Tracker] = []
+        
+        for category in categoriesFromCoreData {
+            
+            let filteredTrackersForDate = category.trackers.filter { tracker in
+                return tracker.schedule.contains(WeekDay(rawValue: selectedWeekday) ?? .monday)
+            }
+            let nonPinnedTrackersForDate = filteredTrackersForDate.filter { !$0.isPinned }
+            if !nonPinnedTrackersForDate.isEmpty {
+                filteredCategories.append(TrackerCategory(categoryTitle: category.categoryTitle, trackers: nonPinnedTrackersForDate))
+            }
+            let pinnedTrackersForDate = filteredTrackersForDate.filter { $0.isPinned }
+            pinnedTrackers.append(contentsOf: pinnedTrackersForDate)
+        }
+        
+        if !pinnedTrackers.isEmpty {
+            let pinnedCategory = TrackerCategory(categoryTitle: NSLocalizedString("pinnedCategoryTitle", comment: ""), trackers: pinnedTrackers)
+            filteredCategories.insert(pinnedCategory, at: 0)
+        }
+        
+        return filteredCategories
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -453,6 +488,17 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         present(actionSheet, animated: true)
     }
     
+    func pinTracker(tracker: Tracker) {
+        do {
+            try trackerStore.pinTracker(tracker)
+            reloadData()
+            collectionView.reloadData()
+            visibleCategories = filterTrackersBySelectedDate()
+            collectionView.reloadData()
+        } catch {
+            print("Failed to pin tracker: \(error)")
+        }
+    }
 }
 
 // MARK: - TrackersViewControllerDelegate

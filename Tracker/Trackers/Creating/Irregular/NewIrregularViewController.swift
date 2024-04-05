@@ -43,7 +43,8 @@ final class NewIrregularViewController: BaseTrackerViewController {
             name: trackerName,
             color: selectedColor ?? .trBlack,
             emoji: selectedEmoji ?? "❓",
-            schedule: weekdayArray
+            schedule: weekdayArray,
+            isPinned: false
         )
         delegate?.createTracker(tracker: newTracker, categoryTitle: selectedCategory)
         dismiss(animated: true)

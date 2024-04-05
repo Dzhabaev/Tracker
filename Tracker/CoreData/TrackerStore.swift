@@ -34,6 +34,7 @@ protocol TrackerStoreProtocol {
     func fetchTracker(_ trackerCoreData: TrackerCoreData) throws -> Tracker
     func addTracker(_ tracker: Tracker, toCategory category: TrackerCategory) throws
     func deleteTracker(_ tracker: Tracker) throws
+    func pinTracker(_ tracker: Tracker) throws
 }
 
 // MARK: - TrackerStore class
@@ -100,13 +101,15 @@ final class TrackerStore: NSObject {
         
         let color = uiColorMarshalling.color(from: colorString)
         let schedule = WeekDay.calculateScheduleArray(from: trackerCoreData.schedule)
+        let isPinned = trackerCoreData.isPinned
         
         return Tracker(
             idTracker: idTracker,
             name: name,
             color: color,
             emoji: emoji,
-            schedule: schedule
+            schedule: schedule,
+            isPinned: isPinned
         )
     }
     
@@ -120,6 +123,7 @@ final class TrackerStore: NSObject {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.schedule = WeekDay.calculateScheduleValue(for: tracker.schedule)
         trackerCoreData.category = trackerCategoryCoreData
+        trackerCoreData.isPinned = tracker.isPinned
         
         try saveContext()
     }
@@ -142,6 +146,17 @@ final class TrackerStore: NSObject {
         } catch {
             context.rollback()
             throw TrackerStoreError.contextSaveError
+        }
+    }
+    
+    internal func pinTracker(_ tracker: Tracker) throws {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", tracker.idTracker as CVarArg)
+        if let result = try context.fetch(fetchRequest).first {
+            result.isPinned = !result.isPinned
+            try saveContext()
+        } else {
+            throw TrackerStoreError.trackerNotFound
         }
     }
 }

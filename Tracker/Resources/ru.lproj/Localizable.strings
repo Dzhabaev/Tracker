@@ -26,6 +26,7 @@
 "deleteTrackerAlert.title" = "Уверены что хотите удалить трекер?";
 "deleteTrackerAlertAction1.title" = "Удалить";
 "deleteTrackerAlertAction2.title" = "Отменить";
+"pinnedCategoryTitle" = "Закрепленные";
 
 // MARK: - TrackerCollectionViewCell
 

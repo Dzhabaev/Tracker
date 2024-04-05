@@ -153,7 +153,9 @@ class BaseTrackerViewController: UIViewController {
             name: trackerName,
             color: selectedColor ?? .trBlack,
             emoji: selectedEmoji ?? "❓",
-            schedule: selectedSchedule)
+            schedule: selectedSchedule,
+            isPinned: false
+        )
         delegate?.createTracker(tracker: newTracker, categoryTitle: selectedCategory)
         dismiss(animated: true)
     }
