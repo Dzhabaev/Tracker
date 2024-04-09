@@ -27,6 +27,7 @@
 "deleteTrackerAlertAction1.title" = "Жою";
 "deleteTrackerAlertAction2.title" = "Бас тарту";
 "pinnedCategoryTitle" = "Бекітілген";
+"filtersButton.setTitle" = "Сүзгілер";
 
 // MARK: - TrackerCollectionViewCell
 

@@ -27,6 +27,7 @@
 "deleteTrackerAlertAction1.title" = "Delete";
 "deleteTrackerAlertAction2.title" = "Cancel";
 "pinnedCategoryTitle" = "Fixed";
+"filtersButton.setTitle" = "Filters";
 
 // MARK: - TrackerCollectionViewCell
 

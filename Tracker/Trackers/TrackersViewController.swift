@@ -27,6 +27,7 @@ final class TrackersViewController: UIViewController {
     private let trackerStore: TrackerStoreProtocol = TrackerStore()
     private let trackerCategoryStore: TrackerCategoryStoreProtocol = TrackerCategoryStore()
     private let trackerRecordStore: TrackerRecordStoreProtocol = TrackerRecordStore()
+    private var currentFilter: String?
     
     private let trackersLabel: UILabel = {
         let trackerLabel = UILabel()
@@ -53,6 +54,7 @@ final class TrackersViewController: UIViewController {
         collectionView.backgroundColor = .trWhite
         collectionView.register(TrackerSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerSupplementaryView.reuseIdentifier)
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 66, right: 0)
         return collectionView
     }()
     
@@ -95,6 +97,17 @@ final class TrackersViewController: UIViewController {
         label.font = .systemFont(ofSize: 12)
         label.textColor = .trBlack
         return label
+    }()
+    
+    private let filtersButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .trBlue
+        button.setTitle(NSLocalizedString("filtersButton.setTitle", comment: ""), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17)
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(pushFiltersButton), for: .touchUpInside)
+        return button
     }()
     
     // MARK: - UIViewController Lifecycle
@@ -192,6 +205,17 @@ final class TrackersViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @objc private func pushFiltersButton() {
+        let viewController = FiltersViewController()
+        viewController.delegate = self
+        if let currentFilter = currentFilter {
+            if currentFilter == NSLocalizedString("Completed", comment: "") || currentFilter == NSLocalizedString("Not completed", comment: "") {
+                viewController.currentFilter = currentFilter
+            }
+        }
+        self.present(viewController, animated: true)
+    }
+    
     // MARK: - Private Methods
     
     private func reloadData() {
@@ -219,7 +243,8 @@ final class TrackersViewController: UIViewController {
          emptyStateImageView,
          emptyStateLabel,
          noResultsImageView,
-         noResultsLabel
+         noResultsLabel,
+         filtersButton
         ].forEach { view.addSubview($0) }
         
         collectionView.delegate = self
@@ -264,7 +289,12 @@ final class TrackersViewController: UIViewController {
             noResultsImageView.heightAnchor.constraint(equalToConstant: 80),
             
             noResultsLabel.topAnchor.constraint(equalTo: noResultsImageView.bottomAnchor, constant: 8),
-            noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filtersButton.widthAnchor.constraint(equalToConstant: 114),
+            filtersButton.heightAnchor.constraint(equalToConstant: 50),
+            filtersButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     
@@ -366,6 +396,31 @@ final class TrackersViewController: UIViewController {
         }
         
         return filteredCategories
+    }
+    
+    private func filterTrackersByCompletion(_ categories: [TrackerCategory], completed: Bool) -> [TrackerCategory] {
+        var filteredCategories: [TrackerCategory] = []
+        for category in categories {
+            let filteredTrackers = category.trackers.filter { tracker in
+                let trackerRecords = getRecords(for: tracker)
+                let isCompleted = trackerRecords.contains { record in
+                    return Calendar.current.isDate(record.date, inSameDayAs: currentDate)
+                }
+                return isCompleted == completed
+            }
+            if !filteredTrackers.isEmpty {
+                filteredCategories.append(TrackerCategory(categoryTitle: category.categoryTitle, trackers: filteredTrackers))
+            }
+        }
+        return filteredCategories
+    }
+    
+    private func filterCompletedTrackers(_ categories: [TrackerCategory]) -> [TrackerCategory] {
+        return filterTrackersByCompletion(categories, completed: true)
+    }
+    
+    private func filterNotCompletedTrackers(_ categories: [TrackerCategory]) -> [TrackerCategory] {
+        return filterTrackersByCompletion(categories, completed: false)
     }
 }
 
@@ -541,6 +596,60 @@ extension TrackersViewController: TrackerStoreDelegate {
         collectionView.performBatchUpdates {
             collectionView.insertSections(update.insertedSections)
             collectionView.insertItems(at: update.insertedIndexPaths)
+        }
+    }
+}
+
+// MARK: - FiltersViewControllerDelegate
+
+extension TrackersViewController: FiltersViewControllerDelegate {
+    
+    func didSelectFilter(_ filter: String) {
+        currentFilter = filter
+        switch filter {
+        case NSLocalizedString("All trackers", comment: ""):
+            visibleCategories = filterTrackersBySelectedDate()
+            collectionView.reloadData()
+            break
+        case NSLocalizedString("Trackers for today", comment: ""):
+            datePicker.date = Date()
+            currentDate = datePicker.date
+            visibleCategories = filterTrackersBySelectedDate()
+            collectionView.reloadData()
+            break
+        case NSLocalizedString("Completed", comment: ""):
+            visibleCategories = filterCompletedTrackers(filterTrackersBySelectedDate())
+            collectionView.reloadData()
+            break
+        case NSLocalizedString("Not completed", comment: ""):
+            visibleCategories = filterNotCompletedTrackers(filterTrackersBySelectedDate())
+            collectionView.reloadData()
+            break
+        default:
+            break
+        }
+        dismiss(animated: true)
+        updateEmptyState()
+    }
+    
+    func didDeselectFilter() {
+        self.currentFilter = nil
+        visibleCategories = filterTrackersBySelectedDate()
+        collectionView.reloadData()
+        dismiss(animated: true)
+        updateEmptyState()
+    }
+    
+    private func updateEmptyState() {
+        if visibleCategories.isEmpty {
+            if currentFilter == NSLocalizedString("Completed", comment: "") || currentFilter == NSLocalizedString("Not completed", comment: "") {
+                showNoResultsImage()
+            } else {
+                showEmptyStateImage()
+            }
+        } else {
+            hideNoResultsImage()
+            hideEmptyStateImage()
         }
     }
 }

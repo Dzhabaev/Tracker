@@ -27,6 +27,11 @@
 "deleteTrackerAlertAction1.title" = "Удалить";
 "deleteTrackerAlertAction2.title" = "Отменить";
 "pinnedCategoryTitle" = "Закрепленные";
+"filtersButton.setTitle" = "Фильтры";
+"All trackers" = "Все трекеры";
+"Trackers for today" = "Трекеры на сегодня";
+"Completed" = "Завершенные";
+"Not completed" = "Не завершенные";
 
 // MARK: - TrackerCollectionViewCell
 

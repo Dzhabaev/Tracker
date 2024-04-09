@@ -24,6 +24,7 @@
 		7224C95F2B5A957500D365AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7224C95E2B5A957500D365AE /* LaunchScreen.storyboard */; };
 		722D10E92B2F47FD00C33462 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722D10E82B2F47FD00C33462 /* CategoryViewController.swift */; };
 		722D10EB2B2F508000C33462 /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722D10EA2B2F508000C33462 /* NewCategoryViewController.swift */; };
+		723830812BC588E8006AC6AE /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723830802BC588E8006AC6AE /* FiltersViewController.swift */; };
 		7247C8EE2B6AA259005F8EF0 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7247C8ED2B6AA259005F8EF0 /* OnboardingViewController.swift */; };
 		72600C782B2DB2CB00F4019C /* NewRegularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */; };
 		72600C7A2B2DBE3800F4019C /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72600C792B2DBE3800F4019C /* UITextField+Extension.swift */; };
@@ -69,6 +70,7 @@
 		7224C95E2B5A957500D365AE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		722D10E82B2F47FD00C33462 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		722D10EA2B2F508000C33462 /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
+		723830802BC588E8006AC6AE /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		7247C8ED2B6AA259005F8EF0 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		72600C772B2DB2CB00F4019C /* NewRegularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRegularViewController.swift; sourceTree = "<group>"; };
 		72600C792B2DBE3800F4019C /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				720BBE402B16006900888F8A /* TrackersViewController.swift */,
+				723830802BC588E8006AC6AE /* FiltersViewController.swift */,
 				72FC15942B3DC81D00F128A9 /* TrackersCell */,
 				726854552B331F8F004F827D /* Creating */,
 			);
@@ -370,6 +373,7 @@
 				720BBE532B174C5D00888F8A /* TabBarController.swift in Sources */,
 				72600C7A2B2DBE3800F4019C /* UITextField+Extension.swift in Sources */,
 				728B6BB82B4D58BA0029A871 /* UIColorMarshalling.swift in Sources */,
+				723830812BC588E8006AC6AE /* FiltersViewController.swift in Sources */,
 				72DB87C02B29F40300190ACD /* TrackerCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
