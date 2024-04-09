@@ -32,6 +32,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var trackerID: UUID?
     private var indexPath: IndexPath?
     private var isPinned: Bool = false
+    private let analyticsService = AnalyticsService()
     
     // MARK: - Private Properties
     
@@ -238,6 +239,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
 }
 
+// MARK: - UIContextMenuInteractionDelegate
+
 extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         guard let indexPath = indexPath,
@@ -251,6 +254,8 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
             identifier: nil,
             previewProvider: nil,
             actionProvider: { _ in
+                
+                self.analyticsService.reportEvent(event: "Did tap tracker cell", parameters: ["event": "click", "screen": "Main", "item": "cell"])
                 
                 let pinAction = UIAction(title: self.isPinned ? NSLocalizedString("unpinAction.title", comment: "") : NSLocalizedString("pinAction.title", comment: "")) { [weak self] _ in
                     guard let trackerID = self?.trackerID,

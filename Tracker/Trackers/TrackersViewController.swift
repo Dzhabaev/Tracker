@@ -28,6 +28,7 @@ final class TrackersViewController: UIViewController {
     private let trackerCategoryStore: TrackerCategoryStoreProtocol = TrackerCategoryStore()
     private let trackerRecordStore: TrackerRecordStoreProtocol = TrackerRecordStore()
     private var currentFilter: String?
+    private let analyticsService = AnalyticsService()
     
     private let trackersLabel: UILabel = {
         let trackerLabel = UILabel()
@@ -141,9 +142,21 @@ final class TrackersViewController: UIViewController {
         collectionView.reloadData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsService.reportEvent(event: "Opened TrackersViewController", parameters: ["event": "open", "screen": "Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.reportEvent(event: "Closed TrackersViewController", parameters: ["event": "close", "screen": "Main"])
+    }
+    
     // MARK: - Actions
     
     @objc private func pushAddTrackerButton() {
+        analyticsService.reportEvent(event: "Add tracker button tapped on TrackersViewController", parameters: ["event": "click", "screen": "Main", "item": "add_track"])
+        
         let creatingTrackerViewController = CreatingTrackerViewController()
         creatingTrackerViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: creatingTrackerViewController)
@@ -151,6 +164,8 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func dateChanged(_ picker: UIDatePicker) {
+        analyticsService.reportEvent(event: "Date picker date changed on TrackersViewController", parameters: ["event": "change", "screen": "Main", "item": "date_changed"])
+        
         currentDate = datePicker.date
         filterVisibleCategories(for: currentDate)
         if let datePickerContainerView = view.subviews.first(where: { String(describing: type(of: $0)).contains("UIDatePicker") }) {
@@ -166,6 +181,8 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func searchTrackers() {
+        analyticsService.reportEvent(event: "Attempted searching for trackers on TrackersViewController", parameters: ["event": "search", "screen": "Main"])
+        
         guard let searchText = searchTextField.text, !searchText.isEmpty else {
             filterVisibleCategories(for: currentDate)
             return
@@ -208,6 +225,8 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func pushFiltersButton() {
+        analyticsService.reportEvent(event: "Did press the filters button on TrackersViewController", parameters: ["event": "click", "screen": "Main", "item": "filter"])
+        
         let viewController = FiltersViewController()
         viewController.delegate = self
         if let currentFilter = currentFilter {
@@ -516,12 +535,16 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
     
     func completeTracker(id: UUID, at indexPath: IndexPath) {
+        analyticsService.reportEvent(event: "Marked tracker completed on TrackersViewController", parameters: ["event": "click", "screen": "Main", "item": "track"])
+        
         let trackerRecord = TrackerRecord(trackerID: id, date: getSelectedDate())
         try? trackerRecordStore.addRecord(with: trackerRecord.trackerID, by: trackerRecord.date)
         collectionView.reloadItems(at: [indexPath])
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
+        analyticsService.reportEvent(event: "Marked tracker not completed on TrackersViewController", parameters: ["event": "click", "screen": "Main", "item": "un_track"])
+        
         let trackerRecord = TrackerRecord(trackerID: id, date: getSelectedDate())
         try? trackerRecordStore.deleteRecord(with: trackerRecord.trackerID, by: trackerRecord.date)
         collectionView.reloadItems(at: [indexPath])
@@ -546,6 +569,8 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
     
     func deleteTracker(tracker: Tracker) {
+        analyticsService.reportEvent(event: "Chose delete option in tracker's context menu", parameters: ["event": "click", "screen": "Main", "item": "delete"])
+        
         let actionSheet: UIAlertController = {
             let alert = UIAlertController()
             alert.title = NSLocalizedString("deleteTrackerAlert.title", comment: "")
@@ -570,6 +595,8 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
     
     func pinTracker(tracker: Tracker) {
+        analyticsService.reportEvent(event: "Pinned or unpinned tracker on TrackersViewController", parameters: ["event": "click", "screen": "Main"])
+        
         do {
             try trackerStore.pinTracker(tracker)
             reloadData()
@@ -582,6 +609,8 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
     
     func editTracker(tracker: Tracker) {
+        analyticsService.reportEvent(event: "Chose edit option in tracker's context menu", parameters: ["event": "click", "screen": "Main", "item": "edit"])
+        
         let viewController = EditingHabitsViewController()
         viewController.tracker = tracker
         let navigationController = UINavigationController(rootViewController: viewController)
