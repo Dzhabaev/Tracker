@@ -16,6 +16,7 @@
 		720BBE532B174C5D00888F8A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720BBE522B174C5D00888F8A /* TabBarController.swift */; };
 		720BBE552B174D4200888F8A /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720BBE542B174D4200888F8A /* StatisticsViewController.swift */; };
 		720CF50C2BC0285F00768202 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720CF50B2BC0285F00768202 /* Colors.swift */; };
+		720CF50E2BC0A0B500768202 /* EditingHabitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720CF50D2BC0A0B500768202 /* EditingHabitsViewController.swift */; };
 		721177FD2B4AD7BB005727A3 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 721177FB2B4AD7BB005727A3 /* Tracker.xcdatamodeld */; };
 		721178002B4AE8DE005727A3 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721177FF2B4AE8DE005727A3 /* TrackerStore.swift */; };
 		721178022B4AE8EA005727A3 /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721178012B4AE8EA005727A3 /* TrackerCategoryStore.swift */; };
@@ -60,6 +61,7 @@
 		720BBE522B174C5D00888F8A /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		720BBE542B174D4200888F8A /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		720CF50B2BC0285F00768202 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		720CF50D2BC0A0B500768202 /* EditingHabitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingHabitsViewController.swift; sourceTree = "<group>"; };
 		721177FC2B4AD7BB005727A3 /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		721177FF2B4AE8DE005727A3 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		721178012B4AE8EA005727A3 /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 			children = (
 				72FB73492B2CD58800092439 /* CreatingTrackerViewController.swift */,
 				72729BCC2B3CBC780001CF45 /* BaseTrackerViewController.swift */,
+				720CF50D2BC0A0B500768202 /* EditingHabitsViewController.swift */,
 				72600C7B2B2DDAE400F4019C /* Regular */,
 				72730B372B38B07D0044F7F8 /* Irregular */,
 				722D10E72B2F476B00C33462 /* Category */,
@@ -350,6 +353,7 @@
 				720BBE412B16006900888F8A /* TrackersViewController.swift in Sources */,
 				7247C8EE2B6AA259005F8EF0 /* OnboardingViewController.swift in Sources */,
 				72600C7D2B2DDBCC00F4019C /* EventButtonCell.swift in Sources */,
+				720CF50E2BC0A0B500768202 /* EditingHabitsViewController.swift in Sources */,
 				72E9E1D12BB351F400E55263 /* CategoryListViewModel.swift in Sources */,
 				72E851032B3C24FF003884A6 /* EmojisAndColorsSupplementaryView.swift in Sources */,
 				72600C832B2E26D100F4019C /* Schedule.swift in Sources */,

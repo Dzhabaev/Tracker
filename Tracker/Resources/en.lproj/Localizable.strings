@@ -99,3 +99,7 @@
 "textFieldNewCategory.placeholder" = "Enter the name of the category";
 "newCategoryDoneButton.setTitle" = "Done";
 "newCategoryNavigationItem.title" = "New category";
+
+// MARK: - EditingHabitsViewController
+
+"setupNavBarEditingHabits.title" = "Editing habits";

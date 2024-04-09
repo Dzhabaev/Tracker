@@ -499,6 +499,13 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
             print("Failed to pin tracker: \(error)")
         }
     }
+    
+    func editTracker(tracker: Tracker) {
+        let viewController = EditingHabitsViewController()
+        viewController.tracker = tracker
+        let navigationController = UINavigationController(rootViewController: viewController)
+        present(navigationController, animated: true)
+    }
 }
 
 // MARK: - TrackersViewControllerDelegate

@@ -15,6 +15,7 @@ protocol TrackerCollectionViewCellDelegate: AnyObject {
     func uncompleteTracker(id: UUID, at indexPath: IndexPath)
     func deleteTracker(tracker: Tracker)
     func pinTracker(tracker: Tracker)
+    func editTracker(tracker: Tracker)
 }
 
 // MARK: - TrackerCollectionViewCell
@@ -261,7 +262,12 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                 }
                 
                 let editAction = UIAction(title: NSLocalizedString("editAction.title", comment: "")) { [weak self] _ in
-                    // TODO: - Обработка нажатия на "Редактировать"
+                    guard let trackerID = self?.trackerID,
+                          let indexPath = self?.indexPath else {
+                        return
+                    }
+                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [], isPinned: false)
+                    self?.delegate?.editTracker(tracker: tracker)
                 }
                 
                 let deleteAction = UIAction(title: NSLocalizedString("deleteAction.title", comment: ""), attributes: .destructive) { [weak self] _ in

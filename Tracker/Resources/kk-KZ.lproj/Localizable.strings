@@ -99,3 +99,7 @@
 "textFieldNewCategory.placeholder" = "Санат атауын енгізіңіз";
 "newCategoryDoneButton.setTitle" = "Дайын";
 "newCategoryNavigationItem.title" = "Жаңа санат";
+
+// MARK: - EditingHabitsViewController
+
+"setupNavBarEditingHabits.title" = "Әдеттерді өңдеу";

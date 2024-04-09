@@ -99,3 +99,7 @@
 "textFieldNewCategory.placeholder" = "Введите название категории";
 "newCategoryDoneButton.setTitle" = "Готово";
 "newCategoryNavigationItem.title" = "Новая категория";
+
+// MARK: - EditingHabitsViewController
+
+"setupNavBarEditingHabits.title" = "Редактирование привычек";
