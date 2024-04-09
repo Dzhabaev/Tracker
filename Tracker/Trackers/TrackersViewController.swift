@@ -99,10 +99,11 @@ final class TrackersViewController: UIViewController {
         return label
     }()
     
-    private let filtersButton: UIButton = {
+    private lazy var filtersButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .trBlue
+        button.setTitleColor(.white, for: .normal)
         button.setTitle(NSLocalizedString("filtersButton.setTitle", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17)
         button.layer.cornerRadius = 16
@@ -160,6 +161,7 @@ final class TrackersViewController: UIViewController {
             }
         }
         visibleCategories = filterTrackersBySelectedDate()
+        updateFilter()
         collectionView.reloadData()
     }
     
@@ -328,16 +330,19 @@ final class TrackersViewController: UIViewController {
     private func showEmptyStateImage() {
         emptyStateImageView.isHidden = false
         emptyStateLabel.isHidden = false
+        filtersButton.isHidden = true
     }
     
     private func hideEmptyStateImage() {
         emptyStateImageView.isHidden = true
         emptyStateLabel.isHidden = true
+        filtersButton.isHidden = false
     }
     
     private func showNoResultsImage() {
         noResultsImageView.isHidden = false
         noResultsLabel.isHidden = false
+        filtersButton.isHidden = false
     }
     
     private func hideNoResultsImage() {
@@ -421,6 +426,27 @@ final class TrackersViewController: UIViewController {
     
     private func filterNotCompletedTrackers(_ categories: [TrackerCategory]) -> [TrackerCategory] {
         return filterTrackersByCompletion(categories, completed: false)
+    }
+    
+    private func updateFilter() {
+        if let currentFilter = currentFilter {
+            switch currentFilter {
+            case NSLocalizedString("All trackers", comment: ""):
+                visibleCategories = filterTrackersBySelectedDate()
+            case NSLocalizedString("Trackers for today", comment: ""):
+                datePicker.date = Date()
+                currentDate = datePicker.date
+                visibleCategories = filterTrackersBySelectedDate()
+            case NSLocalizedString("Completed", comment: ""):
+                visibleCategories = filterCompletedTrackers(filterTrackersBySelectedDate())
+            case NSLocalizedString("Not completed", comment: ""):
+                visibleCategories = filterNotCompletedTrackers(filterTrackersBySelectedDate())
+            default:
+                break
+            }
+        } else {
+            visibleCategories = filterTrackersBySelectedDate()
+        }
     }
 }
 
@@ -609,20 +635,24 @@ extension TrackersViewController: FiltersViewControllerDelegate {
         switch filter {
         case NSLocalizedString("All trackers", comment: ""):
             visibleCategories = filterTrackersBySelectedDate()
+            filtersButton.setTitleColor(.white, for: .normal)
             collectionView.reloadData()
             break
         case NSLocalizedString("Trackers for today", comment: ""):
             datePicker.date = Date()
             currentDate = datePicker.date
             visibleCategories = filterTrackersBySelectedDate()
+            filtersButton.setTitleColor(.red, for: .normal)
             collectionView.reloadData()
             break
         case NSLocalizedString("Completed", comment: ""):
             visibleCategories = filterCompletedTrackers(filterTrackersBySelectedDate())
+            filtersButton.setTitleColor(.red, for: .normal)
             collectionView.reloadData()
             break
         case NSLocalizedString("Not completed", comment: ""):
             visibleCategories = filterNotCompletedTrackers(filterTrackersBySelectedDate())
+            filtersButton.setTitleColor(.red, for: .normal)
             collectionView.reloadData()
             break
         default:
