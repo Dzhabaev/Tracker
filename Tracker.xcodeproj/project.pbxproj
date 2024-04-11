@@ -42,6 +42,7 @@
 		727A72A02B30AA88008FFC61 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727A729F2B30AA88008FFC61 /* CustomTableViewCell.swift */; };
 		728994712BC5DED700FE2214 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728994702BC5DED700FE2214 /* AnalyticsService.swift */; };
 		728B6BB82B4D58BA0029A871 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728B6BB72B4D58BA0029A871 /* UIColorMarshalling.swift */; };
+		72B2A5F22BC6F0A60014FF4E /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B2A5F12BC6F0A60014FF4E /* CustomView.swift */; };
 		72DB87BE2B29F3F400190ACD /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87BD2B29F3F400190ACD /* Tracker.swift */; };
 		72DB87C02B29F40300190ACD /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87BF2B29F40300190ACD /* TrackerCategory.swift */; };
 		72DB87C22B29F40E00190ACD /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB87C12B29F40E00190ACD /* TrackerRecord.swift */; };
@@ -102,6 +103,7 @@
 		727A729F2B30AA88008FFC61 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		728994702BC5DED700FE2214 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		728B6BB72B4D58BA0029A871 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
+		72B2A5F12BC6F0A60014FF4E /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		72DB87BD2B29F3F400190ACD /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		72DB87BF2B29F40300190ACD /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		72DB87C12B29F40E00190ACD /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				720BBE542B174D4200888F8A /* StatisticsViewController.swift */,
+				72B2A5F12BC6F0A60014FF4E /* CustomView.swift */,
 			);
 			path = Statistic;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				72DB87C22B29F40E00190ACD /* TrackerRecord.swift in Sources */,
 				727A72A02B30AA88008FFC61 /* CustomTableViewCell.swift in Sources */,
 				72730B392B38B0AA0044F7F8 /* NewIrregularViewController.swift in Sources */,
+				72B2A5F22BC6F0A60014FF4E /* CustomView.swift in Sources */,
 				72E851012B3C24B5003884A6 /* EmojisAndColorsCell.swift in Sources */,
 				720BBE412B16006900888F8A /* TrackersViewController.swift in Sources */,
 				7247C8EE2B6AA259005F8EF0 /* OnboardingViewController.swift in Sources */,

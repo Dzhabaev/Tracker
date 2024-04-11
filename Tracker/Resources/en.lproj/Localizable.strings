@@ -28,6 +28,11 @@
 "deleteTrackerAlertAction2.title" = "Cancel";
 "pinnedCategoryTitle" = "Fixed";
 "filtersButton.setTitle" = "Filters";
+"viewTitle.text" = "Filters";
+"All trackers" = "All trackers";
+"Trackers for today" = "Trackers for today";
+"Completed" = "Completed";
+"Not completed" = "Not completed";
 
 // MARK: - TrackerCollectionViewCell
 
@@ -40,6 +45,10 @@
 
 "statisticsLabel.text" = "Statistics";
 "emptyStateStatistics.text" = "There is nothing to analyze yet";
+"Best period" = "Best period";
+"Perfect days" = "Perfect days";
+"Trackers completed" = "Trackers completed";
+"Average value" = "Average value";
 
 // MARK: - CreatingTrackerViewController
 

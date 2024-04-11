@@ -28,6 +28,7 @@
 "deleteTrackerAlertAction2.title" = "Отменить";
 "pinnedCategoryTitle" = "Закрепленные";
 "filtersButton.setTitle" = "Фильтры";
+"viewTitle.text" = "Фильтры";
 "All trackers" = "Все трекеры";
 "Trackers for today" = "Трекеры на сегодня";
 "Completed" = "Завершенные";
@@ -44,6 +45,10 @@
 
 "statisticsLabel.text" = "Статистика";
 "emptyStateStatistics.text" = "Анализировать пока нечего";
+"Best period" = "Лучший период";
+"Perfect days" = "Идеальные дни";
+"Trackers completed" = "Трекеров завершено";
+"Average value" = "Среднее значение";
 
 // MARK: - CreatingTrackerViewController
 

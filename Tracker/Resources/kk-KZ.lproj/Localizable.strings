@@ -28,6 +28,11 @@
 "deleteTrackerAlertAction2.title" = "Бас тарту";
 "pinnedCategoryTitle" = "Бекітілген";
 "filtersButton.setTitle" = "Сүзгілер";
+"viewTitle.text" = "Сүзгілер";
+"All trackers" = "Барлық трекерлер";
+"Trackers for today" = "Бүгінгі трекерлер";
+"Completed" = "Аяқталған";
+"Not completed" = "Толық емес";
 
 // MARK: - TrackerCollectionViewCell
 
@@ -40,6 +45,10 @@
 
 "statisticsLabel.text" = "Статистика";
 "emptyStateStatistics.text" = "Әзірге талдауға ештеңе жоқ";
+"Best period" = "Ең жақсы кезең";
+"Perfect days" = "Тамаша күндер";
+"Trackers completed" = "Трекерлер аяқталды";
+"Average value" = "Орташа";
 
 // MARK: - CreatingTrackerViewController
 

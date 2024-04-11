@@ -33,7 +33,7 @@ final class FiltersViewController: UIViewController {
         label.textColor = UIColor(named: "Black")
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.text = NSLocalizedString("Filters", comment: "")
+        label.text = NSLocalizedString("viewTitle.text", comment: "")
         return label
     }()
     
