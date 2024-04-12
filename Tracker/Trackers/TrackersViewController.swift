@@ -613,9 +613,15 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         
         do {
             let tracker = try trackerStore.fetchTrackerByID(id: id, at: indexPath)
+            let category = categories[indexPath.section]
+            let completedDays = getRecords(for: tracker).filter({
+                $0.trackerID == tracker.idTracker
+            }).count
             
             let viewController = EditingHabitsViewController()
             viewController.selectedTracker = tracker
+            viewController.selectedTrackerCategory = category
+            viewController.completedDays = completedDays
             
             let navigationController = UINavigationController(rootViewController: viewController)
             present(navigationController, animated: true)

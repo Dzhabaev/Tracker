@@ -9,7 +9,9 @@ import UIKit
 
 final class EditingHabitsViewController: BaseTrackerViewController {
     
+    var completedDays: Int?
     var selectedTracker: Tracker?
+    var selectedTrackerCategory: TrackerCategory?
     
     private var selectedWeekdays: [Int: Bool] = [:]
     
@@ -33,7 +35,6 @@ final class EditingHabitsViewController: BaseTrackerViewController {
         tableView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         createButton.isEnabled = false
         createButton.backgroundColor = .trGray
-        counterLabel.text = "5 дней"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,6 +123,11 @@ final class EditingHabitsViewController: BaseTrackerViewController {
     }
     
     private func configureLabels() {
+        if let completedDays = completedDays {
+            let formattedString = String.localizedStringWithFormat(NSLocalizedString("StringKey", comment: ""), completedDays)
+            counterLabel.text = formattedString
+        }
+        
         if let tracker = self.selectedTracker {
             textField.text = tracker.name
             selectedEmoji = tracker.emoji
@@ -177,7 +183,14 @@ extension EditingHabitsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let eventButtonCell = cell as? EventButtonCell, indexPath.row == 1 {
+        guard let eventButtonCell = cell as? EventButtonCell else {
+            return
+        }
+        if indexPath.row == 0 {
+            if let categoryTitle = selectedTrackerCategory?.categoryTitle {
+                eventButtonCell.set(subText: categoryTitle)
+            }
+        } else if indexPath.row == 1 {
             let abbreviatedDays = selectedTracker?.schedule.map { $0.shortValue }.joined(separator: ", ") ?? ""
             eventButtonCell.set(subText: abbreviatedDays)
         }
