@@ -568,7 +568,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         }
     }
     
-    func deleteTracker(tracker: Tracker) {
+    func deleteTracker(id: UUID, at indexPath: IndexPath) {
         analyticsService.reportEvent(event: "Chose delete option in tracker's context menu", parameters: ["event": "click", "screen": "Main", "item": "delete"])
         
         let actionSheet: UIAlertController = {
@@ -579,7 +579,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         
         let action1 = UIAlertAction(title: NSLocalizedString("deleteTrackerAlertAction1.title", comment: ""), style: .destructive) { [weak self] _ in
             do {
-                try self?.trackerStore.deleteTracker(tracker)
+                try self?.trackerStore.deleteTracker(id: id, at: indexPath)
                 self?.reloadData()
                 self?.collectionView.reloadData()
             } catch {
@@ -594,11 +594,11 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         present(actionSheet, animated: true)
     }
     
-    func pinTracker(tracker: Tracker) {
+    func pinTracker(id: UUID, at indexPath: IndexPath) {
         analyticsService.reportEvent(event: "Pinned or unpinned tracker on TrackersViewController", parameters: ["event": "click", "screen": "Main"])
         
         do {
-            try trackerStore.pinTracker(tracker)
+            try trackerStore.pinTracker(id: id, at: indexPath)
             reloadData()
             collectionView.reloadData()
             visibleCategories = filterTrackersBySelectedDate()
@@ -608,13 +608,20 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         }
     }
     
-    func editTracker(tracker: Tracker) {
+    func editTracker(id: UUID, at indexPath: IndexPath) {
         analyticsService.reportEvent(event: "Chose edit option in tracker's context menu", parameters: ["event": "click", "screen": "Main", "item": "edit"])
         
-        let viewController = EditingHabitsViewController()
-        viewController.tracker = tracker
-        let navigationController = UINavigationController(rootViewController: viewController)
-        present(navigationController, animated: true)
+        do {
+            let tracker = try trackerStore.fetchTrackerByID(id: id, at: indexPath)
+            
+            let viewController = EditingHabitsViewController()
+            viewController.selectedTracker = tracker
+            
+            let navigationController = UINavigationController(rootViewController: viewController)
+            present(navigationController, animated: true)
+        } catch {
+            print("Error when receiving the tracker for editing: \(error)")
+        }
     }
 }
 

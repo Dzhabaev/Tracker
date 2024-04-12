@@ -13,9 +13,9 @@ protocol TrackerCollectionViewCellDelegate: AnyObject {
     func getSelectedDate() -> Date
     func completeTracker(id: UUID, at indexPath: IndexPath)
     func uncompleteTracker(id: UUID, at indexPath: IndexPath)
-    func deleteTracker(tracker: Tracker)
-    func pinTracker(tracker: Tracker)
-    func editTracker(tracker: Tracker)
+    func pinTracker(id: UUID, at indexPath: IndexPath)
+    func editTracker(id: UUID, at indexPath: IndexPath)
+    func deleteTracker(id: UUID, at indexPath: IndexPath)
 }
 
 // MARK: - TrackerCollectionViewCell
@@ -262,8 +262,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                           let indexPath = self?.indexPath else {
                         return
                     }
-                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [], isPinned: false)
-                    self?.delegate?.pinTracker(tracker: tracker)
+                    self?.delegate?.pinTracker(id: trackerID, at: indexPath)
                 }
                 
                 let editAction = UIAction(title: NSLocalizedString("editAction.title", comment: "")) { [weak self] _ in
@@ -271,8 +270,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                           let indexPath = self?.indexPath else {
                         return
                     }
-                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [], isPinned: false)
-                    self?.delegate?.editTracker(tracker: tracker)
+                    self?.delegate?.editTracker(id: trackerID, at: indexPath)
                 }
                 
                 let deleteAction = UIAction(title: NSLocalizedString("deleteAction.title", comment: ""), attributes: .destructive) { [weak self] _ in
@@ -280,8 +278,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                           let indexPath = self?.indexPath else {
                         return
                     }
-                    let tracker = Tracker(idTracker: trackerID, name: "", color: .clear, emoji: "", schedule: [], isPinned: false)
-                    self?.delegate?.deleteTracker(tracker: tracker)
+                    self?.delegate?.deleteTracker(id: trackerID, at: indexPath)
                 }
                 return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
             }

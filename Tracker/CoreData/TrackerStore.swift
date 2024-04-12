@@ -33,8 +33,9 @@ protocol TrackerStoreProtocol {
     func setDelegate(_ delegate: TrackerStoreDelegate)
     func fetchTracker(_ trackerCoreData: TrackerCoreData) throws -> Tracker
     func addTracker(_ tracker: Tracker, toCategory category: TrackerCategory) throws
-    func deleteTracker(_ tracker: Tracker) throws
-    func pinTracker(_ tracker: Tracker) throws
+    func pinTracker(id: UUID, at indexPath: IndexPath) throws
+    func deleteTracker(id: UUID, at indexPath: IndexPath) throws
+    func fetchTrackerByID(id: UUID, at indexPath: IndexPath) throws -> Tracker
 }
 
 // MARK: - TrackerStore class
@@ -128,12 +129,33 @@ final class TrackerStore: NSObject {
         try saveContext()
     }
     
-    internal func deleteTracker(_ tracker: Tracker) throws {
+    internal func deleteTracker(id: UUID, at indexPath: IndexPath) throws {
         let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", tracker.idTracker as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", id as CVarArg)
         if let result = try context.fetch(fetchRequest).first {
             context.delete(result)
             try saveContext()
+        } else {
+            throw TrackerStoreError.trackerNotFound
+        }
+    }
+    
+    internal func pinTracker(id: UUID, at indexPath: IndexPath) throws {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", id as CVarArg)
+        if let result = try context.fetch(fetchRequest).first {
+            result.isPinned = !result.isPinned
+            try saveContext()
+        } else {
+            throw TrackerStoreError.trackerNotFound
+        }
+    }
+    
+    internal func fetchTrackerByID(id: UUID, at indexPath: IndexPath) throws -> Tracker {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", id as CVarArg)
+        if let result = try context.fetch(fetchRequest).first {
+            return try convertToTracker(from: result)
         } else {
             throw TrackerStoreError.trackerNotFound
         }
@@ -146,17 +168,6 @@ final class TrackerStore: NSObject {
         } catch {
             context.rollback()
             throw TrackerStoreError.contextSaveError
-        }
-    }
-    
-    internal func pinTracker(_ tracker: Tracker) throws {
-        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", tracker.idTracker as CVarArg)
-        if let result = try context.fetch(fetchRequest).first {
-            result.isPinned = !result.isPinned
-            try saveContext()
-        } else {
-            throw TrackerStoreError.trackerNotFound
         }
     }
 }

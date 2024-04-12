@@ -9,7 +9,7 @@ import UIKit
 
 final class EditingHabitsViewController: BaseTrackerViewController {
     
-    var tracker: Tracker?
+    var selectedTracker: Tracker?
     
     private var selectedWeekdays: [Int: Bool] = [:]
     
@@ -36,11 +36,12 @@ final class EditingHabitsViewController: BaseTrackerViewController {
         counterLabel.text = "5 дней"
     }
     
-    // MARK: - Actions
-    
-    @objc override func pushCancelButton() {
-        super.pushCancelButton()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureLabels()
     }
+    
+    // MARK: - Actions
     
     @objc override func pushCreateButton() {
         guard let trackerName = textField.text else { return }
@@ -120,6 +121,13 @@ final class EditingHabitsViewController: BaseTrackerViewController {
         scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
     }
     
+    private func configureLabels() {
+        if let tracker = self.selectedTracker {
+            textField.text = tracker.name
+            selectedEmoji = tracker.emoji
+            selectedColor = tracker.color
+        }
+    }
     
     private func createSchedule(schedule: [WeekDay]) {
         self.selectedSchedule = schedule
@@ -165,6 +173,13 @@ extension EditingHabitsViewController: UITableViewDelegate {
             scheduleViewController.delegate = self
             scheduleViewController.switchStates = selectedWeekdays
             navigationController?.pushViewController(scheduleViewController, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let eventButtonCell = cell as? EventButtonCell, indexPath.row == 1 {
+            let abbreviatedDays = selectedTracker?.schedule.map { $0.shortValue }.joined(separator: ", ") ?? ""
+            eventButtonCell.set(subText: abbreviatedDays)
         }
     }
 }
