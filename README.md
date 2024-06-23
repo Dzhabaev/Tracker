@@ -69,7 +69,7 @@ Tracker - приложение для отслеживания привычек 
 
 ##### Ссылки
 
-- [Дизайн Figma](https://www.figma.com/file/owAO4CAPTJdpM1BZU5JHv7/Tracker-(YP)?t=SZDLmkWeOPX4y6mp-0)
+- [Дизайн Figma](https://www.figma.com/design/gONgrq8Q5PfEs1LUo7KX4h/Tracker?node-id=0-1&t=52qsLhubl1ZYCm5m-0)
 
 ##### Структура проекта
 
