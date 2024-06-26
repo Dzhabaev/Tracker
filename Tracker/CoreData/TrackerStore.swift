@@ -12,9 +12,11 @@ import UIKit
 
 private enum TrackerStoreError: Error {
     case decodingErrorInvalidID
+    case trackerNotFound
+    case contextSaveError
 }
 
-// MARK: - TrackerStoreUpdate structu
+// MARK: - TrackerStoreUpdate structure
 
 struct TrackerStoreUpdate {
     let insertedSections: IndexSet
@@ -31,6 +33,9 @@ protocol TrackerStoreProtocol {
     func setDelegate(_ delegate: TrackerStoreDelegate)
     func fetchTracker(_ trackerCoreData: TrackerCoreData) throws -> Tracker
     func addTracker(_ tracker: Tracker, toCategory category: TrackerCategory) throws
+    func pinTracker(id: UUID, at indexPath: IndexPath) throws
+    func deleteTracker(id: UUID, at indexPath: IndexPath) throws
+    func fetchTrackerByID(id: UUID, at indexPath: IndexPath) throws -> Tracker
 }
 
 // MARK: - TrackerStore class
@@ -97,13 +102,15 @@ final class TrackerStore: NSObject {
         
         let color = uiColorMarshalling.color(from: colorString)
         let schedule = WeekDay.calculateScheduleArray(from: trackerCoreData.schedule)
+        let isPinned = trackerCoreData.isPinned
         
         return Tracker(
             idTracker: idTracker,
             name: name,
             color: color,
             emoji: emoji,
-            schedule: schedule
+            schedule: schedule,
+            isPinned: isPinned
         )
     }
     
@@ -117,8 +124,41 @@ final class TrackerStore: NSObject {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.schedule = WeekDay.calculateScheduleValue(for: tracker.schedule)
         trackerCoreData.category = trackerCategoryCoreData
+        trackerCoreData.isPinned = tracker.isPinned
         
         try saveContext()
+    }
+    
+    internal func deleteTracker(id: UUID, at indexPath: IndexPath) throws {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", id as CVarArg)
+        if let result = try context.fetch(fetchRequest).first {
+            context.delete(result)
+            try saveContext()
+        } else {
+            throw TrackerStoreError.trackerNotFound
+        }
+    }
+    
+    internal func pinTracker(id: UUID, at indexPath: IndexPath) throws {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", id as CVarArg)
+        if let result = try context.fetch(fetchRequest).first {
+            result.isPinned = !result.isPinned
+            try saveContext()
+        } else {
+            throw TrackerStoreError.trackerNotFound
+        }
+    }
+    
+    internal func fetchTrackerByID(id: UUID, at indexPath: IndexPath) throws -> Tracker {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %@", id as CVarArg)
+        if let result = try context.fetch(fetchRequest).first {
+            return try convertToTracker(from: result)
+        } else {
+            throw TrackerStoreError.trackerNotFound
+        }
     }
     
     private func saveContext() throws {
@@ -127,7 +167,7 @@ final class TrackerStore: NSObject {
             try context.save()
         } catch {
             context.rollback()
-            throw error
+            throw TrackerStoreError.contextSaveError
         }
     }
 }

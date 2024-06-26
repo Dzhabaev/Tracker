@@ -42,7 +42,7 @@ final class ScheduleViewController: UIViewController {
         button.backgroundColor = .trBlack
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("scheduleDoneButton.setTitle", comment: ""), for: .normal)
         button.setTitleColor(.trWhite, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(pushDoneButton), for: .touchUpInside)
@@ -72,7 +72,7 @@ final class ScheduleViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupNavBar(){
-        navigationItem.title = "Расписание"
+        navigationItem.title = NSLocalizedString("scheduleNavigationItem.title", comment: "")
     }
     
     private func setupView() {
@@ -128,7 +128,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reuseIdentifier, for: indexPath) as? CustomTableViewCell else { return UITableViewCell()}
-        cell.backgroundColor = .trBackgroundDay
+        cell.backgroundColor = .trBackground
         cell.textLabel?.text = WeekDay.allCases[indexPath.row].value
         let switchButton = UISwitch(frame: .zero)
         switchButton.setOn(switchStates[indexPath.row] ?? false, animated: true)

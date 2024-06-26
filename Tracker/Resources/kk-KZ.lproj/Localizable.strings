@@ -1,0 +1,115 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Chingiz on 28.03.2024.
+  
+*/
+
+// MARK: - OnboardingViewController
+
+"onboardingBlueLabelText.title" = "Тек қалағаныңызды қадағалаңыз";
+"onboardingRedLabelText.title" = "Бұл литр су мен йога болмаса да";
+"onboardingDoneButton.setTitle" = "Бұл технология!";
+
+// MARK: - TabBarController
+
+"trackersVC.UITabBarItem.title" = "Трекерлер";
+"statisticsVC.UITabBarItem.title" = "Статистика";
+
+// MARK: - TrackersViewController
+
+"trackersLabel.text" = "Трекерлер";
+"searchTextField.placeholder" = "Іздеу";
+"emptyState.text" = "Біз нені қадағалаймыз?";
+"noResults.text" = "Ештеңе табылған жоқ";
+"deleteTrackerAlert.title" = "Трекерді жойғыңыз келетініне сенімдісіз бе?";
+"deleteTrackerAlertAction1.title" = "Жою";
+"deleteTrackerAlertAction2.title" = "Бас тарту";
+"pinnedCategoryTitle" = "Бекітілген";
+"filtersButton.setTitle" = "Сүзгілер";
+"viewTitle.text" = "Сүзгілер";
+"All trackers" = "Барлық трекерлер";
+"Trackers for today" = "Бүгінгі трекерлер";
+"Completed" = "Аяқталған";
+"Not completed" = "Толық емес";
+
+// MARK: - TrackerCollectionViewCell
+
+"pinAction.title" = "Бекіту";
+"unpinAction.title" = "Босату";
+"editAction.title" = "Өңдеу";
+"deleteAction.title" = "Жою";
+
+// MARK: - StatisticsViewController
+
+"statisticsLabel.text" = "Статистика";
+"emptyStateStatistics.text" = "Әзірге талдауға ештеңе жоқ";
+"Best period" = "Ең жақсы кезең";
+"Perfect days" = "Тамаша күндер";
+"Trackers completed" = "Трекерлер аяқталды";
+"Average value" = "Орташа";
+
+// MARK: - CreatingTrackerViewController
+
+"creatingNavigationItem.title" = "Трек құру";
+"regularButton.setTitle" = "Әдет";
+"irregularButton.setTitle" = "Тұрақты емес оқиға";
+
+// MARK: - BaseTrackerViewController
+
+"category" = "Санат";
+"schedule" = "Кесте";
+"textFieldBase.placeholder" = "Трекердің атын енгізіңіз";
+"cancelButton.setTitle" = "Бас тарту";
+"createButton.setTitle" = "Жасау";
+"emojiTitleLabel.text" = "Эмодзи";
+"colorTitleLabel.text" = "Түсі";
+
+// MARK: - NewRegularViewController
+
+"setupNavBarNewRegular.title" = "Жаңа әдет";
+"selectedAllDay.subText" = "Күн сайын";
+
+// MARK: - ScheduleViewController
+
+"scheduleNavigationItem.title" = "Кесте";
+"scheduleDoneButton.setTitle" = "Дайын";
+
+// MARK: - Schedule
+
+"Monday" = "Дүйсенбі";
+"Tuesday" = "Сейсенбі";
+"Wednesday" = "Сәрсенбі";
+"Thursday" = "Бейсенбі";
+"Friday" = "Жұма";
+"Saturday" = "Сенбі";
+"Sunday" = "Жексенбі";
+
+"Mon" = "Дс";
+"Tue" = "Сс";
+"Wed" = "Ср";
+"Thu" = "Бс";
+"Fri" = "Жм";
+"Sat" = "Сб";
+"Sun" = "Жс";
+
+// MARK: - NewIrregularViewController
+
+"setupNavBarNewIrregular.title" = "Жаңа тұрақты емес оқиға";
+
+// MARK: - CategoryViewController
+
+"addCategoryButton.setTitle" = "Санат қосу";
+"emptyStateCategory.text" = "Әдеттер мен оқиғаларды мағынасы\nбойынша біріктіруге болады";
+"categoryNavigationItem.title" = "Санат";
+
+// MARK: - NewCategoryViewController
+
+"textFieldNewCategory.placeholder" = "Санат атауын енгізіңіз";
+"newCategoryDoneButton.setTitle" = "Дайын";
+"newCategoryNavigationItem.title" = "Жаңа санат";
+
+// MARK: - EditingHabitsViewController
+
+"setupNavBarEditingHabits.title" = "Әдеттерді өңдеу";
